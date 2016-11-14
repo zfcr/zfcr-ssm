@@ -1,26 +1,46 @@
 package cn.zfcr.common.base.service;
 
 import java.util.List;
-import java.util.Map;
+import cn.zfcr.mybatis.page.PageList;
 
 public interface IBaseService<T> {
 
+	/**
+	 * 查询表中所有数据
+	 * @return
+	 */
 	List<T> findAll();
 
 	/**
-	 * 动态查询
+	 * 查询表中的数据，动态条件，即数据不为空的字段做为条件查询
 	 * @param obj
 	 * @return
 	 */
-	List<T> dynamicFind(T obj);
+	List<T> findByDynamic(T obj);
 
 	/**
 	 * 分页查询
 	 * @param obj
-	 * @param page 页数
-	 * @param rows 每页行数
+	 * @param page
+	 * @param rows
 	 * @return
 	 */
-	Map<String, Object> findOfPage(T obj, int page, int rows);
+	PageList<T> queryPaging(T obj, int page, int rows);
+
+	/**
+	 * 查询指定表中所有数据，可排序
+	 * @param cla
+	 * @param orderBy
+	 * @return
+	 */
+	List<T> findAll(Class<T> cla, String orderBy);
+
+	/**
+	 * 查询表中的数据，动态条件，即数据不为空的字段做为条件查询，可排序
+	 * @param obj
+	 * @param orderBy
+	 * @return
+	 */
+	List<T> findByDynamic(T obj, String orderBy);
 
 }

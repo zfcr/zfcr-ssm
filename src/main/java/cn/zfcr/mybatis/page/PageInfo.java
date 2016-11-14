@@ -25,15 +25,11 @@ public class PageInfo extends RowBounds{
 	/** 每页的行数 */
 	private int pageRows;
 	
-	/** 是否分页 false：不行页，true：分页 */
+	/** 是否分页 false：不行页，true：分页 ，不启用*/
 	private boolean whetherPage;
 	
 	/** 排序子句 */
 	private String orderByClause;
-	
-	public PageInfo(){
-		this.whetherPage = false;
-	}
 	
 	public PageInfo(RowBounds rowBounds){
 		if(rowBounds instanceof PageInfo){
@@ -50,14 +46,14 @@ public class PageInfo extends RowBounds{
 	}
 
 	public PageInfo(int page, int pageRows) {
-		super();
+		super((page - 1) * pageRows,page * pageRows);
 		this.page = page;
 		this.pageRows = pageRows;
 		this.whetherPage = true;
 	}
 
 	public PageInfo(int page, int pageRows, String orderByClause) {
-		super();
+		super((page - 1) * pageRows,page * pageRows);
 		this.page = page;
 		this.pageRows = pageRows;
 		this.whetherPage = true;

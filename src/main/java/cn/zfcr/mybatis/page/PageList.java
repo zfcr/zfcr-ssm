@@ -1,6 +1,7 @@
 package cn.zfcr.mybatis.page;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**  
  * Package: cn.zfcr.mybatis.page  
@@ -27,6 +28,17 @@ public class PageList<E> extends ArrayList<E> {
 	
 	/** 总行数 */
 	private int totalCount;
+	
+	public PageList(Collection<? extends E> c) {
+		super(c);
+	}
+	
+	public PageList(Collection<? extends E> c, int page, int pageRows, int totalCount) {
+		super(c);
+		this.page = page;
+		this.pageRows = pageRows;
+		this.totalCount = totalCount;
+	}
 
 	public int getPage() {
 		return page;

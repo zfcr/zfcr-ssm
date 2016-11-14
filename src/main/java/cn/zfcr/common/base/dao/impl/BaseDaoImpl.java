@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import cn.zfcr.common.base.dao.IBaseDao;
+import cn.zfcr.mybatis.page.PageInfo;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
@@ -32,13 +32,8 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 	}
 	
 	@Override
-	public List<T> dynamicFind(T obj){
+	public List<T> findByDynamic(T obj){
 		return mapper.select(obj);
-	}
-	
-	@Override
-	public List<T> findOfPage(T obj, RowBounds rowBounds){
-		return mapper.selectByRowBounds(obj, rowBounds);
 	}
 	
 	@Override
@@ -47,7 +42,12 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 	}
 	
 	@Override
-	public List<T> findByExample(Example example){
+	public List<T> findByDynamic(Example example){
 		return mapper.selectByExample(example);
+	}
+	
+	@Override
+	public List<T> queryPaging(T obj, PageInfo pageInfo){
+		return mapper.selectByRowBounds(obj, pageInfo);
 	}
 }

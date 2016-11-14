@@ -27,4 +27,7 @@ public class TestAction extends ActionSupport {
 		return "success";
 	}
 
+	public static void main(String[] args) {
+		System.out.println(Integer.toString(1));
+	}
 }

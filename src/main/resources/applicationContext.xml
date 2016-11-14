@@ -14,16 +14,6 @@
 	
 	<import resource="classpath:META-INF/cxf/cxf.xml"/>  
     
-    <jaxws:endpoint id="testFileServiceImpl"   
-        implementor="cn.zfcr.webservices.service.impl.TestFileServiceImpl"   
-        address="/test" >  
-    </jaxws:endpoint>  
-	
-    <jaxws:endpoint id="fileTransferServiceImpl"   
-        implementor="cn.zfcr.webservices.service.impl.FileTransferServiceImpl"   
-        address="/fileTransfer" >  
-    </jaxws:endpoint>  
-	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -58,6 +48,17 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+		<property name="plugins">
+	        <array>
+	            <bean class="cn.zfcr.mybatis.page.PageInterceptor">
+	                <property name="properties">
+	                    <value>
+	                        property-key=property-value
+	                    </value>
+	                </property>
+	            </bean>
+	        </array>
+	    </property>
 	</bean>
 
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

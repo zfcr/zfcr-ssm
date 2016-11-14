@@ -2,8 +2,7 @@ package cn.zfcr.common.base.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.session.RowBounds;
-
+import cn.zfcr.mybatis.page.PageInfo;
 import tk.mybatis.mapper.entity.Example;
 
 public interface IBaseDao<T> {
@@ -26,22 +25,14 @@ public interface IBaseDao<T> {
 	 * @param obj 条件
 	 * @return
 	 */
-	List<T> findByExample(Example example);
+	List<T> findByDynamic(Example example);
 
 	/**
 	 * 根据动态条件查询满足条件的结果集
 	 * @param obj 条件
 	 * @return
 	 */
-	List<T> dynamicFind(T obj);
-
-	/**
-	 * 根据动态条件分页查询
-	 * @param obj
-	 * @param rowBounds
-	 * @return
-	 */
-	List<T> findOfPage(T obj, RowBounds rowBounds);
+	List<T> findByDynamic(T obj);
 
 	/**
 	 * 根据动态条件统计满足条件的数量
@@ -49,5 +40,7 @@ public interface IBaseDao<T> {
 	 * @return
 	 */
 	long dynamicCount(T obj);
+
+	List<T> queryPaging(T obj, PageInfo pageInfo);
 
 }
