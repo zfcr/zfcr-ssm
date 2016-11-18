@@ -1,7 +1,6 @@
 package cn.zfcr.common.base.service.impl;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,21 +9,22 @@ import javax.persistence.Column;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ReflectionUtils;
 
 import cn.zfcr.common.base.dao.IBaseDao;
+import cn.zfcr.common.base.dao.impl.CommonDaoImpl;
 import cn.zfcr.common.base.service.IBaseService;
+import cn.zfcr.entity.City;
 import cn.zfcr.mybatis.page.PageInfo;
 import cn.zfcr.mybatis.page.PageList;
 import cn.zfcr.utils.ConvertUtils;
+import cn.zfcr.utils.ReflectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Transactional
 public class BaseServiceImpl<T> implements IBaseService<T>{
 	
-	@Resource
-	protected IBaseDao<T> baseDao;
+	protected IBaseDao<T> baseDao=new CommonDaoImpl<T>(City.class);
 	
 	@Override
 	public List<T> findAll(){
@@ -67,8 +67,7 @@ public class BaseServiceImpl<T> implements IBaseService<T>{
 	protected void dynamicWhere(Example example, T obj) {
 		Field[] fields = obj.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			Method method = ReflectionUtils.findMethod(obj.getClass(), "get"+StringUtils.capitalize(field.getName()));
-			Object value = ReflectionUtils.invokeMethod(method, obj);
+			Object value = ReflectionUtils.invokeGetMethodByProp(obj, field.getName());
 			if(!ConvertUtils.isEmptyOrDefault(value)){
 				String colName = field.getName();
 				Column colAnno = field.getAnnotation(Column.class);

@@ -15,7 +15,7 @@ public class TestAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	
 	@Resource
-	private CountryMapper countryMapper;
+	private CountryMapper<Country> countryMapper;
 	
 	public String index(){
 		System.out.println("=====");

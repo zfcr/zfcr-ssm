@@ -10,13 +10,13 @@ import org.apache.ibatis.annotations.SelectProvider;
 import cn.zfcr.mybatis.provider.type.DeleteProviderType;
 import cn.zfcr.mybatis.provider.type.SelectProviderType;
 
-public interface CountryMapper {
+public interface CountryMapper<T> {
 
 	@SelectProvider(type=SelectProviderType.class,method="findBy")
-	public <T> T findBy(T obj);
+	public T findBy(T obj);
 	
 	@SelectProvider(type=SelectProviderType.class,method="findAll")
-	public <T> List<Map<String,Object>> findAll(Class<T> cla);
+	public List<Map<String,Object>> findAll(Class<T> cla);
 	
 	@DeleteProvider(type=DeleteProviderType.class,method="delete")
 	public void delete(@Param("id")long id);

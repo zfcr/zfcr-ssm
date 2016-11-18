@@ -1,6 +1,8 @@
 package cn.zfcr.common.base.service;
 
 import java.util.List;
+
+import cn.zfcr.entity.City;
 import cn.zfcr.mybatis.page.PageList;
 
 public interface IBaseService<T> {
