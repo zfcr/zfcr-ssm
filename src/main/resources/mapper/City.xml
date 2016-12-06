@@ -11,4 +11,8 @@
 	<select id="findAll" resultType="cn.zfcr.entity.City">
         select * from City
     </select>
+    
+    <select id="findById" resultType="cn.zfcr.entity.City" parameterType="string">
+        select * from City where id = #{value}
+    </select>
 </mapper>

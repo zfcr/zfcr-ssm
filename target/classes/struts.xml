@@ -13,9 +13,6 @@
        
     <package name="default"  extends="struts-default" namespace="/">
     	<global-allowed-methods>regex:.*</global-allowed-methods>
-		<action name="test-*" class="testAction" method="{1}">
-			<result name="success">/index.jsp</result>
-		</action>
 		<action name="city-*" class="cityAction" method="{1}">
 			<result name="success">/index.jsp</result>
 		</action>
@@ -23,8 +20,20 @@
 			<result name="success">/index.jsp</result>
 			<result name="goadd">/common/codeAutoGenerate/goadd.jsp</result>
 		</action>
+		<action name="demo-*" class="demoAction" method="{1}">
+			<result name="{1}">/WEB-INF/demo/{1}.jsp</result>
+		</action>
     </package>
     
+    <package name="blog"  extends="struts-default" namespace="/blog">
+    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    	<action name="create" class="blogCreateAction" method="create">
+			<result name="create">/WEB-INF/busi/blog/create.jsp</result>
+		</action>
+		<action name="createAtCkeditor" class="blogCreateAction" method="createAtCkeditor">
+			<result name="createAtCkeditor">/WEB-INF/busi/blog/createAtCkeditor.jsp</result>
+		</action>
+    </package>
 </struts>
 
 

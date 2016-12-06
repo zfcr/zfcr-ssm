@@ -1,0 +1,2 @@
+开发日志：
+MyBatis通用功能暂时开发完成，请参考Demo：CityAction
