@@ -27,11 +27,17 @@
     
     <package name="blog"  extends="struts-default" namespace="/blog">
     	<global-allowed-methods>regex:.*</global-allowed-methods>
-    	<action name="create" class="blogCreateAction" method="create">
+    	<action name="create" class="blogManageAction" method="create">
 			<result name="create">/WEB-INF/busi/blog/create.jsp</result>
 		</action>
-		<action name="createAtCkeditor" class="blogCreateAction" method="createAtCkeditor">
+		<action name="createAtCkeditor" class="blogManageAction" method="createAtCkeditor">
 			<result name="createAtCkeditor">/WEB-INF/busi/blog/createAtCkeditor.jsp</result>
+		</action>
+    </package>
+    <package name="blogShow"  extends="struts-default" namespace="/blog/show">
+    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    	<action name="*" class="blogManageAction" method="show">
+			<result name="show">/WEB-INF/busi/blog/show.jsp</result>
 		</action>
     </package>
 </struts>
