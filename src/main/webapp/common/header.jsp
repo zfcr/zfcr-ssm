@@ -1,6 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctx" value="<%=request.getContextPath()%>" scope="session"/>
 
+<!--[if lt IE 9]> 
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
 <link rel="stylesheet" href="${ctx}/framework/bootstrap-3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="${ctx}/framework/select2/css/select2.min.css">
 <link rel="stylesheet" href="${ctx}/framework/buttons/css/buttons.css">
