@@ -18,7 +18,23 @@ public interface ICommonQueryDao {
 	 * @param parameters 查询条件
 	 * @return
 	 */
-	List<?> findByStatementId(Class<?> cla, String statementId, Object parameters);
+	List<?> query(Class<?> cla, String statementId, Object parameters);
+
+	/**
+	 * 查询，返回一个对象（一行数据或第一行的第一列值），调用statementid为"queryFirstResult"的查询
+	 * @param cla
+	 * @param parameters
+	 * @return
+	 */
+	Object queryFirstResult(Class<?> cla, Object parameters);
+
+	/**
+	 * 查询，返回一个对象（一行数据或第一行的第一列值）
+	 * @param cla
+	 * @param parameters
+	 * @return
+	 */
+	Object queryFirstResult(Class<?> cla, String string, Object parameters);
 
 	
 }

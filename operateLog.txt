@@ -1,2 +1,37 @@
 开发日志：
 MyBatis通用功能暂时开发完成，请参考Demo：CityAction
+
+2016-12-20
+jquery treegrid改造，改成从后台逐级获取数据。
+已经能从后台获取第一次数据
+下一步，点击某节点后，获取节点下的数据。 
+
+2016-12-21
+点击向下展开时，动态加载gif图片，完成。
+下一步，ajax加载数据，加载成功之后，重新渲染，关闭动态加载图片
+
+2016-12-22
+treegrid改选，初步完成。 已经实现可以从后台动态获取数据，还有分页功能待实现（暂时不考虑分页）
+jquery.treegrid.js文件为改造过的文件
+treegrid两种形式：
+1、从后台动态获取数据
+需要引入的js：
+jquery.treegrid.js
+jquery.treegrid.bootstrap3.js
+jquery.treegrid.extend.zf.js
+
+2、一次性从后台获取所有数据展示
+jquery.treegrid.min.js
+jquery.treegrid.bootstrap3.js
+jquery.treegrid.extend.zf.js
+
+具体使用方法，请参考链接：
+/zfcr-ssm/demo-indexTreeGridDn.action	动态加载
+/zfcr-ssm/demo-indexTreeGrid.action		一次性加载所有数据
+
+2017-01-03
+多级分类管理－保存完成，有部分需要修改
+下一下：修改
+1、加字段：排序
+2、保存成功之后，调用url返回
+修改之后，删除、修改

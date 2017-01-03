@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">  
+<generatorConfiguration>  
+	<!-- mysql-connector文件路径 -->
+    <classPathEntry  location="C:\Users\zhangfeng\.m2\repository\mysql\mysql-connector-java\6.0.2\mysql-connector-java-6.0.2.jar"/>  
+    <context id="DB2Tables"  targetRuntime="MyBatis3">  
+    	<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+    
+        <commentGenerator>  
+            <property name="suppressDate" value="true"/>  
+            
+            <property name="suppressAllComments" value="true"/>  
+        </commentGenerator>  
+        <!-- 链接配置 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" 
+		connectionURL="jdbc:mysql://localhost:3306/blogzf?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=UTC" 
+		userId="root" password="admin">  
+        </jdbcConnection>  
+        <javaTypeResolver>  
+            <property name="forceBigDecimals" value="false"/>  
+        </javaTypeResolver>  
+        <!-- 生成实体类的路径，com.project.ssm.entity 这个路径可以自动生成，但是必须有src这个路径-->
+        <javaModelGenerator targetPackage="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp" 
+		targetProject="src/main/java">  
+            <property name="enableSubPackages" value="true"/>  
+            <property name="trimStrings" value="true"/>  
+        </javaModelGenerator>  
+       <!-- 生成实体类的路径，这个路径可以自动生成，但是必须有src这个路径-->
+       <sqlMapGenerator targetPackage="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp" targetProject="src/main/java">  
+            <property name="enableSubPackages" value="true"/>  
+        </sqlMapGenerator>  
+        
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp" 
+		targetProject="src/main/java">  
+            <property name="enableSubPackages" value="true"/>  
+        </javaClientGenerator>  
+       
+        <table tableName="t_system_dictionary_tree" domainObjectName="DictionaryTree" enableCountByExample="false" 
+		      enableUpdateByExample="false" enableDeleteByExample="false" 
+			  enableSelectByExample="false" selectByExampleQueryId="false"></table>
+			  
+		<table tableName="t_system_dictionary_type" domainObjectName="DictionaryType" enableCountByExample="false" 
+		      enableUpdateByExample="false" enableDeleteByExample="false" 
+			  enableSelectByExample="false" selectByExampleQueryId="false"></table>
+    </context>  
+</generatorConfiguration>

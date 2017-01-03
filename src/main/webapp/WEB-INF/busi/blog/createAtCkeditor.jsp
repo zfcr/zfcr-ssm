@@ -41,6 +41,7 @@
 	
 </body>
 <script src="${ctx }/framework/ckeditor/vendor/ckeditor/ckeditor.js"></script>
+<script src="${ctx }/framework/myModal/myModal.js"></script>
 <script type="text/javascript">
 	var config = {
 		extraPlugins: 'codesnippet,colorbutton,colordialog',
@@ -57,9 +58,11 @@
 	
 	// 弹出分类管理页面
 	function alertTypeManage(){
-		var modalStr = '<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> <div class="modal-dialog">   <div class="modal-content">     <div class="modal-header">       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>       <h4 class="modal-title" id="myModalLabel">Modal title</h4>     </div>     <div class="modal-body">       	内容     </div>     <div class="modal-footer">       <a href="#" class="button button-primary button-rounded button-small" onclick="gosave()">确定</a>&nbsp;&nbsp;<a href="#" class="button button-rounded button-small" onclick="gosave()">取消</a>     </div>   </div> </div></div>';
-		$("body").append(modalStr);
-		$("#bs-example-modal-lg").modal('toggle');
+// 		var modalStr = '<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> <div class="modal-dialog">   <div class="modal-content">     <div class="modal-header">       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>       <h4 class="modal-title" id="myModalLabel">Modal title</h4>     </div>     <div class="modal-body">       	内容     </div>     <div class="modal-footer">       <a href="#" class="button button-primary button-rounded button-small" onclick="gosave()">确定</a>&nbsp;&nbsp;<a href="#" class="button button-rounded button-small" onclick="gosave()">取消</a>     </div>   </div> </div></div>';
+// 		$("body").append(modalStr);
+// 		$("#bs-example-modal-lg").modal('toggle');
+		var config = {title:'提示',msg:'保存成功'};
+		myModal.alert("保存成功",function(){alert('11');});
 	}
 </script>
 </html>

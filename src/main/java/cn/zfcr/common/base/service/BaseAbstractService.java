@@ -2,6 +2,7 @@ package cn.zfcr.common.base.service;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import cn.zfcr.common.dao.ICommonQueryDao;
@@ -19,4 +20,12 @@ public class BaseAbstractService {
 	@Resource
 	protected ICommonQueryDao commonQueryDao;
 
+	
+	protected boolean isEmpty(String value) {
+		return StringUtils.isEmpty(value);
+	}
+	
+	protected boolean isNotEmpty(String value) {
+		return StringUtils.isNotEmpty(value);
+	}
 }

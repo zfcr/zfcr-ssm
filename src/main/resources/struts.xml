@@ -40,6 +40,12 @@
 			<result name="show">/WEB-INF/busi/blog/show.jsp</result>
 		</action>
     </package>
+    <package name="busiSys"  extends="struts-default" namespace="/busi/sys">
+    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    	<action name="*-*" class="{1}Action" method="{2}">
+			<result name="{2}">/WEB-INF/busi/sysManage/{1}/{2}.jsp</result>
+		</action>
+    </package>
 </struts>
 
 

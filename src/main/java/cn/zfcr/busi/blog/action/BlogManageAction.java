@@ -1,6 +1,5 @@
 package cn.zfcr.busi.blog.action;
 
-import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
 
 import cn.zfcr.common.base.action.BaseAction;

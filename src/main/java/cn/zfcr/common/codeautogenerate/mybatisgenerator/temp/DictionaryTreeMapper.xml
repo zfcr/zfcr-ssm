@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp.DictionaryTreeMapper">
+  <resultMap id="BaseResultMap" type="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp.DictionaryTree">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="treeId" jdbcType="VARCHAR" property="treeid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="isLeaf" jdbcType="INTEGER" property="isleaf" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp.DictionaryTree">
+    insert into t_system_dictionary_tree (id, code, treeId, 
+      name, parent_id, type_code, 
+      remark, isLeaf)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{treeid,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{isleaf,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zfcr.common.codeautogenerate.mybatisgenerator.temp.DictionaryTree">
+    insert into t_system_dictionary_tree
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="treeid != null">
+        treeId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="typeCode != null">
+        type_code,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="isleaf != null">
+        isLeaf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="treeid != null">
+        #{treeid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isleaf != null">
+        #{isleaf,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

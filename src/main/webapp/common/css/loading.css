@@ -1,0 +1,33 @@
+/*
+  动态加载的gif效果
+*/
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin3 .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+    -moz-animation: spin4 .7s infinite linear;
+}
+
+/* Safari 和 Chrome */
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+/* IE9以上 */
+@-ms-keyframes spin3 {
+    from { -ms-transform: scale(1) rotate(0deg);}
+    to { -ms-transform: scale(1) rotate(360deg);}
+}
+
+/* Firefox */
+@-moz-keyframes spin4 {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}

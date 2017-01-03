@@ -15,4 +15,6 @@ package cn.zfcr.common.constants;
 public class MyBatisStatementConstans {
 
 	public final static String SELECT_STATEMENT_FINDALL = "findAll";
+	
+	public final static String QUERY_FIRST_RESULT = "queryFirstResult";
 }

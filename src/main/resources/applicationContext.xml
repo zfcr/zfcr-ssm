@@ -57,7 +57,7 @@
     
     <!-- Mybatis通用Mapper与Spring的集成 -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-    	<property name="basePackage" value="cn.zfcr.business.mapper,cn.zfcr.common.mapper"></property>
+    	<property name="basePackage" value="cn.zfcr.busi.sysmanage.mapper"></property>
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager" />

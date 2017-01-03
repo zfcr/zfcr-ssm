@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfcr.busi.sysmanage.mapper.DictionaryTreeMapper">
+  
+  <select id="queryFirstResult" resultType="string">
+  	select max(code) as fristResult from t_system_dictionary_tree where type_code like #{0}
+  </select>
+  
+  <select id="queryMaxTreeId" resultType="string">
+  	select max(treeId) as treeId from t_system_dictionary_tree where treeId like #{0}
+  </select>
+  
+</mapper>
