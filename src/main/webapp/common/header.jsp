@@ -11,16 +11,22 @@
 <link rel="stylesheet" href="${ctx}/framework/buttons/css/buttons.css">
 <link rel="stylesheet" href="${ctx}/framework/font-awesome-4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="${ctx}/framework/jQuery-Validation-Engine/css/validationEngine.jquery.css" type="text/css"/>
+<link rel="stylesheet" href="${ctx}/framework/loading-Mask/jquery.mloading.css">
 <script type="text/javascript" src="${ctx}/framework/jquery/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/framework/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${ctx}/framework/select2/js/select2.full.min.js"></script>
 <script type="text/javascript" src="${ctx}/framework/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/framework/jQuery-Validation-Engine/js/languages/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
 <script src="${ctx}/framework/jQuery-Validation-Engine/js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
-<script src="${ctx }/framework/myModal/myModal.js"></script>
+<script type="text/javascript" src="${ctx }/framework/layer/layer.js"></script>
+<script type="text/javascript" src="${ctx }/framework/loading-Mask/jquery.mloading.js"></script>
 <script src="${ctx }/common/common.js"></script>
 <script type="text/javascript">
 	var ctx = '${ctx}';
+	
+	$(function(){
+		$(".body").css("min-width","1366px");
+	});
 </script>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <style type="text/css">
@@ -40,4 +46,19 @@
 		padding-right: 0px;
 		width: 100%;
 	}
+	
+    .navbar {
+        margin-bottom: 5px;
+    }
+    
+    .font-summary {
+        font-size: 12px;
+        color: #999;
+        word-wrap: break-word;
+    }
+    
+    .space10 {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 </style>

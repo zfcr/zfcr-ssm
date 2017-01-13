@@ -41,4 +41,19 @@ public interface ITreeTypeManageService {
 	 */
 	boolean validateCode(DictionaryTree entity);
 
+	/**
+	 * 删除
+	 * @param id
+	 */
+	void deleteById(String id);
+
+	DictionaryTree getById(String id);
+
+	/**
+	 * 查询所有下级字典信息
+	 * @param string
+	 * @param treetypeTypecode
+	 * @return
+	 */
+	List<DictionaryTree> queryByTreeId(String treeId, String typeCode);
 }

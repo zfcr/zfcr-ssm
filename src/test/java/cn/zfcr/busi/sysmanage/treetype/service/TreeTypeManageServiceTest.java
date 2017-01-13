@@ -1,5 +1,7 @@
 package cn.zfcr.busi.sysmanage.treetype.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -42,5 +44,15 @@ public class TreeTypeManageServiceTest {
 	public void testQueryMaxCode(){
 		String value = treeTypeManageService.queryMaxCode(SystemConstants.TREETYPE_TYPECODE);
 		System.out.println(value);
+	}
+	
+	@Test
+	public void testQueryByTreeId(){
+		List<DictionaryTree> dictionaryTrees = treeTypeManageService.queryByTreeId("1.1.", SystemConstants.TREETYPE_TYPECODE);
+		System.out.println(dictionaryTrees);
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("1.1".split("\\.").length);
 	}
 }

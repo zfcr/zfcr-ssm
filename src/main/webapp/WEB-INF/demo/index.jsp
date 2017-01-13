@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>表单示例</title>
 <jsp:include page="/common/header.jsp"></jsp:include>
+<link rel="stylesheet" href="${ctx}/framework/zTree-v3/css/metroStyle/metroStyle.css">
 </head> 
 <body>
 <div class="panel panel-success" style="width: 800px;margin: 0 auto;">
@@ -98,6 +99,12 @@
 		    </div>
 		  </div>
 		  <div class="form-group">
+		    <label for="type1" class="col-sm-2 control-label">分类</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="type1" placeholder="点击选择分类" readonly="readonly" onclick="selectType()">
+		    </div>
+		  </div>
+		  <div class="form-group">
 		    <div class="col-sm-offset-2 col-sm-10">
 		      <div class="checkbox">
 		        <label>
@@ -114,13 +121,87 @@
 		</form>
 	</div>
 </div>
+
+<div id="menuContent" class="menuContent" style="display:none; position: absolute;border: 1px solid gray;background-color: white;overflow: auto;">
+	<ul id="treeDemo" class="ztree" style="margin-top:0; width:160px;"></ul>
+</div>
 </body>
+<script type="text/javascript" src="${ctx}/framework/zTree-v3/js/jquery.ztree.core.js"></script>
 <script type="text/javascript">
 $("#select-multiple-love").select2({multiple:true});
 $("#select-single-address").select2();
 $("#form1").validationEngine();
 function gosave(){
 	$("#form1").validationEngine('validate');
+}
+
+function selectType(){
+	var setting = {
+            view: {
+                selectedMulti: true
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            edit: {
+                enable: true
+            }
+        };
+
+        var zNodes =[
+            { id:1, pId:0, name:"父节点1", open:true},
+            { id:11, pId:1, name:"父节点11"},
+            { id:111, pId:11, name:"叶子节点111"},
+            { id:112, pId:11, name:"叶子节点112"},
+            { id:113, pId:11, name:"叶子节点113"},
+            { id:114, pId:11, name:"叶子节点114"},
+            { id:12, pId:1, name:"父节点12"},
+            { id:121, pId:12, name:"叶子节点121"},
+            { id:122, pId:12, name:"叶子节点122"},
+            { id:123, pId:12, name:"叶子节点123"},
+            { id:124, pId:12, name:"叶子节点124"},
+            { id:13, pId:1, name:"父节点13", isParent:true},
+            { id:2, pId:0, name:"父节点2"},
+            { id:21, pId:2, name:"父节点21", open:true},
+            { id:211, pId:21, name:"叶子节点211"},
+            { id:212, pId:21, name:"叶子节点212"},
+            { id:213, pId:21, name:"叶子节点213"},
+            { id:214, pId:21, name:"叶子节点214"},
+            { id:22, pId:2, name:"父节点22"},
+            { id:221, pId:22, name:"叶子节点221"},
+            { id:222, pId:22, name:"叶子节点222"},
+            { id:223, pId:22, name:"叶子节点223"},
+            { id:224, pId:22, name:"叶子节点224"},
+            { id:23, pId:2, name:"父节点23"},
+            { id:231, pId:23, name:"叶子节点231"},
+            { id:232, pId:23, name:"叶子节点232"},
+            { id:233, pId:23, name:"叶子节点233"},
+            { id:234, pId:23, name:"叶子节点234"},
+            { id:3, pId:0, name:"父节点3", isParent:true}
+        ];
+
+	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	var thisOffSet = $("#type1").offset();
+	var width=200,height=300;
+	$("#menuContent").css({left:thisOffSet.left + "px", top:thisOffSet.top + $("#type1").outerHeight() + "px", width:width+"px", height:height+"px"}).slideDown("fast");
+	
+	$("body").bind("mousedown", hideSelectMenu);
+	$(window).resize(function(){
+		var thisOffSet = $("#type1").offset();
+		$("#menuContent").css({left:thisOffSet.left + "px", top:thisOffSet.top + $("#type1").outerHeight() + "px"}).slideDown("fast");
+	});
+}
+
+function hideSelectMenu(){
+	if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+		$("#menuContent").fadeOut("fast");
+		$("body").unbind("mousedown", hideSelectMenu);
+	}
 }
 </script>
 </html>

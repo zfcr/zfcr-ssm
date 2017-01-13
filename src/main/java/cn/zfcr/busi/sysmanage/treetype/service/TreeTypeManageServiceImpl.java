@@ -40,7 +40,7 @@ public class TreeTypeManageServiceImpl extends BaseAbstractService implements IT
 	}
 
 	/**
-	 * 设置树形结构的treeId
+	 * 设置树形结构的treeId，并更新上级节点
 	 * @param dictionaryTree
 	 */
 	private void setTreeId(DictionaryTree dictionaryTree) {
@@ -53,6 +53,7 @@ public class TreeTypeManageServiceImpl extends BaseAbstractService implements IT
 			String value = maxTreeId.toString().substring(maxTreeId.toString().lastIndexOf(".") + 1);
 			dictionaryTree.setTreeId(parentTree.getTreeId() + "." + (Integer.parseInt(value) + 1));
 		}
+		dictionaryTree.setLevelNumber(dictionaryTree.getTreeId().split("\\.").length);
 		dictionaryTree.setIsLeaf("1");
 		if(!"0".equals(parentTree)){
 			parentTree.setIsLeaf("0");
@@ -86,5 +87,25 @@ public class TreeTypeManageServiceImpl extends BaseAbstractService implements IT
 	@Override
 	public boolean validateCode(DictionaryTree entity) {
 		return dictionaryTreeMapper.selectCount(entity) > 0;
+	}
+
+	@Override
+	public void deleteById(String id) {
+		dictionaryTreeMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public DictionaryTree getById(String id) {
+		return dictionaryTreeMapper.selectByPrimaryKey(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DictionaryTree> queryByTreeId(String treeId, String typeCode) {
+		DictionaryTree dictionaryTree = new DictionaryTree();
+		dictionaryTree.setTreeId(treeId+"%");
+		dictionaryTree.setTypeCode(typeCode);
+		List<DictionaryTree> dictionaryTrees = (List<DictionaryTree>) commonQueryDao.query(DictionaryTreeMapper.class, "queryByTreeId", dictionaryTree);
+		return dictionaryTrees;
 	}
 }

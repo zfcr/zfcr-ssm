@@ -29,6 +29,11 @@ public class BaseAction {
 		getResponse().getWriter().write(str);
 	}
 	
+	protected void writeStr(boolean success, String msg) throws IOException {
+		getResponse().setContentType("text/html;charset=utf-8");
+		getResponse().getWriter().write(String.format("{\"success\":%s,\"msg\":\"%s\"}", success, msg));
+	}
+	
 	protected void writeTreeJson(List<?> data, Long size) throws IOException {
 		Gson gson = new GsonBuilder().create();
 		String dataStr = gson.toJson(data);

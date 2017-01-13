@@ -37,11 +37,15 @@
             <property name="enableSubPackages" value="true"/>  
         </javaClientGenerator>  
        
-        <table tableName="t_system_dictionary_tree" domainObjectName="DictionaryTree" enableCountByExample="false" 
-		      enableUpdateByExample="false" enableDeleteByExample="false" 
-			  enableSelectByExample="false" selectByExampleQueryId="false"></table>
+<!--         <table tableName="t_system_dictionary_tree" domainObjectName="DictionaryTree" enableCountByExample="false"  -->
+<!-- 		      enableUpdateByExample="false" enableDeleteByExample="false"  -->
+<!-- 			  enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
 			  
-		<table tableName="t_system_dictionary_type" domainObjectName="DictionaryType" enableCountByExample="false" 
+<!-- 		<table tableName="t_system_dictionary_type" domainObjectName="DictionaryType" enableCountByExample="false"  -->
+<!-- 		      enableUpdateByExample="false" enableDeleteByExample="false"  -->
+<!-- 			  enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
+
+			<table tableName="t_blog_info" domainObjectName="BlogInfo" enableCountByExample="false" 
 		      enableUpdateByExample="false" enableDeleteByExample="false" 
 			  enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>  

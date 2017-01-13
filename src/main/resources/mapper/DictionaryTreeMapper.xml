@@ -2,12 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zfcr.busi.sysmanage.mapper.DictionaryTreeMapper">
   
+  <resultMap id="baseResultMap" type="cn.zfcr.busi.sysmanage.entity.DictionaryTree">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="treeId" jdbcType="VARCHAR" property="treeId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="isLeaf" jdbcType="VARCHAR" property="isLeaf" />
+    <result column="orderNo" jdbcType="INTEGER" property="orderNo" />
+  </resultMap>
+  
   <select id="queryFirstResult" resultType="string">
   	select max(code) as fristResult from t_system_dictionary_tree where type_code like #{0}
   </select>
   
   <select id="queryMaxTreeId" resultType="string">
   	select max(treeId) as treeId from t_system_dictionary_tree where treeId like #{0}
+  </select>
+  
+  <select id="queryByTreeId" resultMap="baseResultMap" parameterType="cn.zfcr.busi.sysmanage.entity.DictionaryTree">
+  	SELECT id, code, treeId, name, parent_id, type_code, remark, isLeaf, orderNo
+  		FROM t_system_dictionary_tree WHERE treeId like #{treeId} AND type_code = #{typeCode}
   </select>
   
 </mapper>

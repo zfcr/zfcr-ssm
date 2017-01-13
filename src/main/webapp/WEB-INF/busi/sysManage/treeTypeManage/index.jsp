@@ -69,10 +69,22 @@
 	function add(){
 		var nodeId = $("#treeDemo").treegrid("getSelectedNodeId");
 		if($("#treeDemo").treegrid("getAllNodes").length > 0 && nodeId == ""){
-			myModal.alert("请选择节点！");
+			Zf.alert("请选择节点！", 0);
 			return;
 		}
-		window.location.href = "${ctx }/busi/sys/treeTypeManage-add.action?parentId="+nodeId;
+		window.location.href = "${ctx }/busi/sys/treeTypeManage-addOrEdit.action?parentId="+nodeId;
+	}
+	
+	function goedit(data){
+		window.location.href = "${ctx }/busi/sys/treeTypeManage-addOrEdit.action?id="+data;
+	}
+	
+	function goadd(data){
+		window.location.href = "${ctx }/busi/sys/treeTypeManage-addOrEdit.action?parentId="+data;
+	}
+	
+	function godelete(data){
+		Common.deleted("${ctx}/busi/sys/treeTypeManage-delete.action?id="+data, function(){location.reload();});
 	}
 </script>
 </html>

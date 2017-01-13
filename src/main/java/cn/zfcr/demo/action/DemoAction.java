@@ -3,11 +3,14 @@ package cn.zfcr.demo.action;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import cn.zfcr.common.base.action.BaseAction;
 
 @Controller
+@Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
 public class DemoAction extends BaseAction{
 	
 	public String index(){

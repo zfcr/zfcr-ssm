@@ -10,9 +10,19 @@
 	<constant name="struts.action.excludePattern" value="/nofilter/.*,/scorenofilter/.*"/>
     <constant name="struts.i18n.reload" value="true" />
     <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.objectFactory" value="spring" />
+    
+    <package name="zf_base" extends="struts-default" namespace="/" abstract="true">
+        <global-results>
+            <result name="globalException">/error.jsp</result>
+        </global-results>
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        <global-exception-mappings>
+            <exception-mapping result="globalException" exception="java.lang.Exception" />
+        </global-exception-mappings>
+    </package>
        
-    <package name="default"  extends="struts-default" namespace="/">
-    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    <package name="test"  extends="zf_base" namespace="/">
 		<action name="city-*" class="cityAction" method="{1}">
 			<result name="success">/index.jsp</result>
 		</action>
@@ -25,23 +35,24 @@
 		</action>
     </package>
     
-    <package name="blog"  extends="struts-default" namespace="/blog">
-    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    <package name="blog"  extends="zf_base" namespace="/blog">
     	<action name="create" class="blogManageAction" method="create">
 			<result name="create">/WEB-INF/busi/blog/create.jsp</result>
 		</action>
 		<action name="createAtCkeditor" class="blogManageAction" method="createAtCkeditor">
 			<result name="createAtCkeditor">/WEB-INF/busi/blog/createAtCkeditor.jsp</result>
 		</action>
+		<action name="saveOrUpdate" class="blogManageAction" method="saveOrUpdate" >
+		    <result name="success" type="redirect">/</result>
+		</action>
+		<action name="ckeditorUpload" class="blogManageAction" method="ckeditorUpload" />
     </package>
-    <package name="blogShow"  extends="struts-default" namespace="/blog/show">
-    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    <package name="blogShow"  extends="zf_base" namespace="/blog/show">
     	<action name="*" class="blogManageAction" method="show">
 			<result name="show">/WEB-INF/busi/blog/show.jsp</result>
 		</action>
     </package>
-    <package name="busiSys"  extends="struts-default" namespace="/busi/sys">
-    	<global-allowed-methods>regex:.*</global-allowed-methods>
+    <package name="busiSys"  extends="zf_base" namespace="/busi/sys">
     	<action name="*-*" class="{1}Action" method="{2}">
 			<result name="{2}">/WEB-INF/busi/sysManage/{1}/{2}.jsp</result>
 		</action>
