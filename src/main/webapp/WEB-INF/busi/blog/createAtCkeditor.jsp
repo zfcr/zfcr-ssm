@@ -94,7 +94,7 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="entity.summary">摘要</label>
-			    <s:textarea class="form-control validate[maxSize[500]]" rows="3" id="entity.summary" name="entity.summary" placeholder="摘要用于在首页显示"></s:textarea>
+			    <s:textarea class="form-control validate[maxSize[400]]" rows="3" id="entity.summary" name="entity.summary" placeholder="摘要用于在首页显示"></s:textarea>
 			  </div>
 			  <div class="form-group">
                 <label for="entity.summary">创建人</label>
@@ -132,14 +132,14 @@
 	});
 	
 	function gosave(){
-		var summary = $("#entity\\.summary").val();
-		if(summary == undefined || $.trim(summary) == ""){
-			$("#entity\\.summary").val(CKEDITOR.instances.editor1.document.getBody().getText());
-		}
 		var data = CKEDITOR.instances.editor1.getData();
 		$("#entity\\.content").val(data);
 		var result = $("#form1").validationEngine('validate');
 		if(result){
+			var summary = $("#entity\\.summary").val();
+			if(summary == undefined || $.trim(summary) == ""){
+				$("#entity\\.summary").val(CKEDITOR.instances.editor1.document.getBody().getText());
+			}
 			$("#form1").attr("action","${ctx}/blog/saveOrUpdate");
 			$("#form1").submit();
 		}

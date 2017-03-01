@@ -29,6 +29,9 @@ public class PageList<E> extends ArrayList<E> {
 	/** 总行数 */
 	private int totalCount;
 	
+	/** 总页数 */
+    private int totalPage;
+	
 	public PageList(Collection<? extends E> c) {
 		super(c);
 	}
@@ -39,6 +42,14 @@ public class PageList<E> extends ArrayList<E> {
 		this.pageRows = pageRows;
 		this.totalCount = totalCount;
 	}
+	
+	public PageList(Collection<? extends E> c, int page, int pageRows, int totalCount, int totalPage) {
+        super(c);
+        this.page = page;
+        this.pageRows = pageRows;
+        this.totalCount = totalCount;
+        this.totalPage = totalPage;
+    }
 
 	public int getPage() {
 		return page;
@@ -64,11 +75,12 @@ public class PageList<E> extends ArrayList<E> {
 		this.totalCount = totalCount;
 	}
 
-	public PageList(int page, int pageRows, int totalCount) {
-		super();
-		this.page = page;
-		this.pageRows = pageRows;
-		this.totalCount = totalCount;
-	}
-	
+	public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
 }

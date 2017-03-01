@@ -1,11 +1,14 @@
 package cn.zfcr.busi.sysmanage.entity;
 
+import javax.persistence.Table;
+
 /**
  * 字典类型表(t_system_dictionary_type)
  * @author zhangfeng
  * @date 2016年12月26日
  * 
  */
+@Table(name="t_system_dictionary_type")
 public class DictionaryType {
 	
     private String id;

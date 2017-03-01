@@ -37,6 +37,15 @@
   </filter-mapping>
   
   <filter>
+    <filter-name>visittimes</filter-name>
+    <filter-class>cn.zfcr.filter.VisitTimesRecordFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>visittimes</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
     <filter-name>struts2</filter-name>
     <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
   </filter>
@@ -50,6 +59,10 @@
   </filter-mapping>
   
   <welcome-file-list>
-  	<welcome-file>main.jsp</welcome-file>
+  	<welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404error.html</location>
+  </error-page>
 </web-app>

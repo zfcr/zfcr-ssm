@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -33,12 +34,12 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
-         <a class="button button-primary button-rounded button-small" href="#">Go</a>
+        <a class="button button-primary button-rounded button-small" href="#">Go</a>
       </form>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">程序人生</a></li>
         <li><a href="#">生活点滴</a></li>
-        <li><a href="#">娱乐天地</a></li>
+        <li><a href="#">留言板</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -52,78 +53,134 @@
 
 <div class="container" style="width: 1200px;min-width: 1200px;">
     <div class="row clearfix">
-        <div class="col-md-8 column">
+        <div class="col-md-8 column" style="border-right: 5px dashed #ddd;"> <!-- border-right: 3px double red; -->
           <div class="page-header">
             <span class="label label-success">推荐文章</span>
           </div>
           
-          <div style="height: 5px;"></div>
-          
-          <blockquote>
-                    <table style="height: 200px;">
-                        <tr>
-                            <td rowspan="2">
-                                <img alt="" src="/zfcr-ssm/blog/images/27088c1befe84ba199b1aaf4bd4a7de9.jpeg" width="180" height="120">
-                            </td>
-                            <td style="padding-left: 15px;">
-                                <div>Eclipse tab键用空格代替</div>
-                                <div class="font-summary">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    <span>2016年01月13日</span>
-                                    
-                                    <span class="space10"></span>
-                                    
-                                    <span class="glyphicon glyphicon-user"></span>
-                                    <span>章锋</span>
-                                    
-                                    <span class="space10"></span>
-                                    
-                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                    <span>阅读(10)</span>
-                                    
-                                    <span class="space10"></span>
-                                    
-                                    <span class="glyphicon glyphicon-comment"></span>
-                                    <span>评论(10)</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 15px;vertical-align: top;" valign="top">
-                                <p class="font-summary">
-	                                Eclipse tab键用空格代替两种方式（不确定哪个版本设置哪种方式，我就两种都设了）： 第一种： Window-->Preferences-->General-->Editors-->Text Editors 选项Insert spaces for tabs 勾上，然后 Displayed tab width =4（一般使用4个空格代替）
-                                </p>
-                            </td>
-                        </tr>
-                    </table>
-          </blockquote>
-          
-          <div style="height: 5px;"></div>
-          
-          <blockquote>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-                </p> <small>Someone famous <cite>Source Title</cite></small>
-          </blockquote>
-          
-          <div style="height: 5px;"></div>
-          
-          <blockquote>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-                </p> <small>Someone famous <cite>Source Title</cite></small>
-          </blockquote>
+          <s:iterator value="#request.blogInfos" var="blogInfo">
+                <blockquote>
+					<table style="height: 150px; overflow: hidden;">
+						<tr>
+							<td><img alt="" src="${blogInfo.imagePath }" width="160" height="110"></td>
+							<td style="padding-left: 15px; vertical-align: top;" valign="top">
+								<div><a href="${ctx }/blog/show/${blogInfo.id}" target="_blank">${blogInfo.title }</a></div>
+								<div class="font-summary">
+									<span class="glyphicon glyphicon-time"></span>
+									<span><s:date name="#blogInfo.createTime" format="yyyy-MM-dd"/></span>
+
+									<span class="space10"></span>
+									
+									<span class="glyphicon glyphicon-user"></span>
+									<span>${blogInfo.createUser }</span>
+									
+									<span class="space10"></span>
+									
+									<span class="glyphicon glyphicon-eye-open"></span>
+									<span>阅读(${blogInfo.visitTimes })</span>
+
+									<span class="space10"></span>
+									
+									<span class="glyphicon glyphicon-comment"></span>
+									<span>评论(${blogInfo.comments })</span>
+								</div>
+								<div style="height: 5px;"></div>
+								<div class="font-summary" style="height: 100px; overflow: hidden;">
+									${blogInfo.summary }
+								</div>
+							</td>
+						</tr>
+					</table>
+			 </blockquote>
+			 
+			 <div style="height: 5px;"></div>
+			 
+          </s:iterator>
+		  
+		  <div align="right">
+		    <nav aria-label="Page navigation">
+			  <ul class="pagination">
+			    <li>
+			      <a href="${ctx }/blog/1" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    <s:iterator begin="1" end="#request.blogInfos.getTotalPage()" var="pageIndex">
+			     <li 
+			         <s:if test="#pageIndex == #request.blogInfos.getPage()">class="active"</s:if>
+			     ><a href="${ctx }/blog/${pageIndex}">${pageIndex}</a></li>
+			    </s:iterator>
+			    <li>
+			      <a href="${ctx }/blog/${blogInfos.getTotalPage() }" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>	
+	       </div>
         </div>
         <div class="col-md-4 column">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">最新文章</h3>
+            <div>
+                <div class="page-header" style="margin-bottom: 0px;">
+                    <span class="label label-success">最新文章</span>
                 </div>
-                <div class="panel-body">
+                <div class="titleGrid">
+                    <s:iterator value="#request.newBlogInfos" var="newBlogInfo" status="blogCount">
+                        <div style="border-bottom: 1px dotted #ddd;">
+	                        <div class="number 
+	                           <s:if test="#blogCount.count == 1">one</s:if>
+	                           <s:elseif test="#blogCount.count == 2">two</s:elseif>
+	                           <s:elseif test="#blogCount.count == 3">three</s:elseif>
+	                           <s:elseif test="#blogCount.count == 4">four</s:elseif>
+	                           <s:elseif test="#blogCount.count == 5">five</s:elseif>
+	                           <s:elseif test="#blogCount.count == 6">six</s:elseif>
+	                           <s:elseif test="#blogCount.count == 7">seven</s:elseif>
+	                           " style="float: left;margin-right: 10px;margin-top: 8px;">${blogCount.count }</div>
+	                        <div class="apostrophe" style="padding-top: 10px;">
+	                            <nobr><a href="${ctx }/blog/show/${newBlogInfo.id }" target="_blank">${newBlogInfo.title }</a></nobr>
+	                        </div>
+	                    </div>
+                    </s:iterator>
                 </div>
             </div>
+            <div style="height: 50px;"></div>
+                <div style="width: 350px;margin: 0px auto;">
+                   <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- 轮播（Carousel）指标 -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>   
+                        <!-- 轮播（Carousel）项目 -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="${ctx }/common/images/gg-img1.png" alt="First slide">
+                            </div>
+                            <div class="item">
+                                <img src="${ctx }/common/images/gg-img2.png" alt="Second slide">
+                            </div>
+                            <div class="item">
+                                <img src="${ctx }/common/images/gg-img3.png" alt="Third slide">
+                            </div>
+                        </div>
+                        <!-- 轮播（Carousel）导航 -->
+                        <a class="carousel-control left" href="#myCarousel" 
+                            data-slide="prev">&lsaquo;
+                        </a>
+                        <a class="carousel-control right" href="#myCarousel" 
+                            data-slide="next">&rsaquo;
+                        </a>
+                    </div>
+                </div>
         </div>
     </div>
+    
 </div>
+
+    <div class="footer" align="center">
+        <hr>
+        <p>  © 2017 章锋个人博客（zhangfeng.com）</p>
+    </div>
 </body>
 </html>

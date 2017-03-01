@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfcr.busi.mapper.BlogCommentMapper">
+  <resultMap id="BaseResultMap" type="cn.zfcr.busi.entity.BlogComment">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickName" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="lastUpdateDate" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="blogId" jdbcType="VARCHAR" property="blogId" />
+    <result column="commentId" jdbcType="VARCHAR" property="commentId" />
+    <result column="supportTimes" jdbcType="INTEGER" property="supportTimes" />
+    <result column="opposeTimes" jdbcType="INTEGER" property="opposeTimes" />
+  </resultMap>
+  
+</mapper>

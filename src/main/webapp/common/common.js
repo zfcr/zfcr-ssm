@@ -83,6 +83,14 @@ var Common = {
 				Zf.alert("请求失败，请联系管理员！", 5);
 			}
 		});
+	},
+	// 异步Url访问
+	asyncCallUrl: function(url){
+		$.ajax({
+			url: url,
+			method:'GET',
+			dataType: "text"
+		});
 	}
 };
 

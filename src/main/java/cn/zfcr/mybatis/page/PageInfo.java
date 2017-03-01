@@ -46,14 +46,14 @@ public class PageInfo extends RowBounds{
 	}
 
 	public PageInfo(int page, int pageRows) {
-		super((page - 1) * pageRows,page * pageRows);
+	    super(0,pageRows);
 		this.page = page;
 		this.pageRows = pageRows;
 		this.whetherPage = true;
 	}
 
 	public PageInfo(int page, int pageRows, String orderByClause) {
-		super((page - 1) * pageRows,page * pageRows);
+		super(0,pageRows);
 		this.page = page;
 		this.pageRows = pageRows;
 		this.whetherPage = true;

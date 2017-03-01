@@ -61,4 +61,27 @@
         margin-left: 10px;
         margin-right: 10px;
     }
+    
+    .footer {
+        margin-top: 20px;
+    }
+    
+    .apostrophe {
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+    
+    a:link {color: black;}
+    a:visited {color: black;}
+    a:hover, a:active {color: red;}
+    a:hover {text-decoration: underline;}
+    
+    .titleGrid .number{width:20px;height:20px;line-height:20px;text-align:center;border-radius:4px;color:#fff;background-color:#979598}
+	.titleGrid .one{background-color:rgb(255,0,0)}
+	.titleGrid .two{background-color:rgb(255,128,0)}
+	.titleGrid .three{background-color:rgb(255,255,0)}
+	.titleGrid .four{background-color:rgb(0,255,0)}
+	.titleGrid .five{background-color:rgb(0,255,255)}
+	.titleGrid .six{background-color:rgb(0,0,255)}
+	.titleGrid .seven{background-color:rgb(128,0,255)}
 </style>

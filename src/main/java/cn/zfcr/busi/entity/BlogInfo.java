@@ -1,6 +1,5 @@
 package cn.zfcr.busi.entity;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -49,6 +48,10 @@ public class BlogInfo {
 
     @Column(name="visitTimes")
     private Integer visitTimes;
+    
+    /** 评论次数 */
+    @Column(name="comments")
+    private Integer comments;
     
     @Column(name="lastUpdateUser")
     private String lastUpdateUser;
@@ -171,13 +174,21 @@ public class BlogInfo {
         this.imagePath = imagePath;
     }
 
+    public Integer getComments() {
+        return comments;
+    }
+
+    public void setComments(Integer comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "BlogInfo [id=" + id + ", title=" + title + ", content=" + content + ", blogType=" + blogType
                 + ", summary=" + summary + ", blogTag=" + blogTag + ", blogStatus=" + blogStatus + ", createUser="
                 + createUser + ", createTime=" + createTime + ", createAddr=" + createAddr + ", visitTimes="
-                + visitTimes + ", lastUpdateUser=" + lastUpdateUser + ", lastUpdateTime=" + lastUpdateTime
-                + ", imagePath=" + imagePath + "]";
+                + visitTimes + ", comments=" + comments + ", lastUpdateUser=" + lastUpdateUser + ", lastUpdateTime="
+                + lastUpdateTime + ", imagePath=" + imagePath + "]";
     }
 
 }

@@ -39,6 +39,9 @@
     	<action name="create" class="blogManageAction" method="create">
 			<result name="create">/WEB-INF/busi/blog/create.jsp</result>
 		</action>
+    	<action name="" class="blogManageAction" method="main">
+			<result name="main">/main.jsp</result>
+		</action>
 		<action name="createAtCkeditor" class="blogManageAction" method="createAtCkeditor">
 			<result name="createAtCkeditor">/WEB-INF/busi/blog/createAtCkeditor.jsp</result>
 		</action>
@@ -46,6 +49,9 @@
 		    <result name="success" type="redirect">/</result>
 		</action>
 		<action name="ckeditorUpload" class="blogManageAction" method="ckeditorUpload" />
+		<action name="*" class="blogManageAction" method="main">
+            <result name="main">/main.jsp</result>
+        </action>
     </package>
     <package name="blogShow"  extends="zf_base" namespace="/blog/show">
     	<action name="*" class="blogManageAction" method="show">
@@ -56,6 +62,11 @@
     	<action name="*-*" class="{1}Action" method="{2}">
 			<result name="{2}">/WEB-INF/busi/sysManage/{1}/{2}.jsp</result>
 		</action>
+    </package>
+    <package name="blogManage" extends="zf_base" namespace="/blog/manage">
+        <action name="*-*" class="{1}Action" method="{2}">
+            <result name="{2}">/WEB-INF/busi/blog/{2}.jsp</result>
+        </action>
     </package>
 </struts>
 

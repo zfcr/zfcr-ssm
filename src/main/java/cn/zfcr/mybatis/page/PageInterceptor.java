@@ -93,7 +93,14 @@ public class PageInterceptor implements Interceptor{
 		builder.useCache(ms.isUseCache());
 		invocation.getArgs()[0] = builder.build();
 		Object result = invocation.proceed();
-		PageList<Object> list = new PageList<>((List<?>)result, pageInfo.getPage(), pageInfo.getPageRows(), count);
+		int totalPage = 1;
+		if(count > 0 && count > pageInfo.getPageRows()){
+		    totalPage = count / pageInfo.getPageRows();
+		    if(count % pageInfo.getPageRows() != 0){
+		        totalPage ++;
+		    }
+		}
+		PageList<Object> list = new PageList<>((List<?>)result, pageInfo.getPage(), pageInfo.getPageRows(), count, totalPage);
 		return list;
 	}
 
@@ -106,11 +113,12 @@ public class PageInterceptor implements Interceptor{
 	 */
 	private String getPageSql(MappedStatement ms, String sql, PageInfo pageInfo, List<ParameterMapping> parameterMappings) {
 		StringBuilder pageSql = new StringBuilder(sql);
-		String sqlFormate = "select * from (%s) temp limit %s,%s ";
+		String sqlFormate = "select * from (%s) temp %s limit %s,%s ";
+		String orderByClause = "";
 		if(StringUtils.isNotEmpty(pageInfo.getOrderByClause())){
-			sqlFormate += "ORDER BY " + pageInfo.getOrderByClause();
+		    orderByClause = "ORDER BY " + pageInfo.getOrderByClause();
 		}
-		return String.format(sqlFormate, pageSql.toString(), pageInfo.getOffset(), pageInfo.getLimit());
+		return String.format(sqlFormate, pageSql.toString(), orderByClause, (pageInfo.getPage() - 1) * pageInfo.getPageRows(), pageInfo.getPage() * pageInfo.getPageRows());
 	}
 
 	/**

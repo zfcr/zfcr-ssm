@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfcr.busi.mapper.BlogInfoMapper">
+  <resultMap id="baseResultMap" type="cn.zfcr.busi.entity.BlogInfo">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="blogType" jdbcType="VARCHAR" property="blogType" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="blogTag" jdbcType="VARCHAR" property="blogTag" />
+    <result column="blogStatus" jdbcType="VARCHAR" property="blogStatus" />
+    <result column="createUser" jdbcType="VARCHAR" property="createUser" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="createAddr" jdbcType="VARCHAR" property="createAddr" />
+    <result column="visitTimes" jdbcType="INTEGER" property="visitTimes" />
+    <result column="lastUpdateUser" jdbcType="VARCHAR" property="lastUpdateUser" />
+    <result column="lastUpdateTime" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="imagePath" jdbcType="VARCHAR" property="imagePath" />
+    <result column="comments" jdbcType="INTEGER" property="comments" />
+  </resultMap>
+
+  <select id="queryNewTitle" resultMap="baseResultMap" parameterType="cn.zfcr.busi.entity.BlogInfo">
+    select id,title,blogType,comments,visitTimes,blogStatus from t_blog_info order by visitTimes desc limit 0,10
+  </select>
+</mapper>

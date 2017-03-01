@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,10 +25,13 @@ import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 
 import cn.zfcr.busi.blog.service.BlogManageService;
+import cn.zfcr.busi.entity.BlogComment;
 import cn.zfcr.busi.entity.BlogInfo;
 import cn.zfcr.busi.sysmanage.entity.DictionaryTree;
 import cn.zfcr.busi.sysmanage.treetype.service.ITreeTypeManageService;
 import cn.zfcr.common.base.action.BaseAction;
+import cn.zfcr.mybatis.page.PageInfo;
+import cn.zfcr.mybatis.page.PageList;
 import cn.zfcr.system.constants.SystemConstants;
 import cn.zfcr.system.utils.CommonUtils;
 import sun.misc.BASE64Decoder;
@@ -65,6 +70,37 @@ public class BlogManageAction extends BaseAction{
 		return "create";
 	}
 	
+	public String main() throws UnsupportedEncodingException{
+	    String uri = getRequest().getRequestURI();
+        String pageIndex = uri.substring(uri.lastIndexOf("/")+1, uri.length());
+        int i = 1;
+        if(NumberUtils.isNumber(pageIndex)){
+            i = NumberUtils.toInt(pageIndex, 1);
+        }
+	    PageList<BlogInfo> list = blogManageService.queryPaing(entity, new PageInfo(i, 10, "visitTimes desc"));
+	    if(i != 1 && (list == null || list.size() <= 0)){
+	        i = 1;
+	        list = blogManageService.queryPaing(entity, new PageInfo(i, 10, "visitTimes desc"));
+	    }
+	    for (BlogInfo blogInfo : list) {
+	        blogInfo.setContent(new String(blogInfo.getContent().getBytes("ISO-8859-1"),"UTF-8"));
+        }
+	    getRequest().setAttribute("blogInfos", list);
+	    
+	    setNewBlogInfo();
+        return "main";
+    }
+
+	/**
+	 * 设置最新文章到请求中
+	 */
+    private void setNewBlogInfo() {
+      
+        // 最新文章(10条)
+	    List<BlogInfo> newBlogInfos = blogManageService.queryNewTitle(entity);
+	    getRequest().setAttribute("newBlogInfos", newBlogInfos);
+    }
+	
 	public String createAtCkeditor() {
 		DictionaryTree where = new DictionaryTree();
 		where.setLevelNumber(2);
@@ -90,10 +126,17 @@ public class BlogManageAction extends BaseAction{
 		return "createAtCkeditor";
 	}
 	
-	public String show(){
+	public String show() throws Exception{
 		String uri = getRequest().getRequestURI();
-		String blogCode = uri.substring(uri.lastIndexOf("/")+1, uri.length());
-		System.out.println(blogCode);
+		String blogId = uri.substring(uri.lastIndexOf("/")+1, uri.length());
+		entity = blogManageService.findById(blogId);
+		Assert.isTrue(entity != null, "访问的博客不存在，请检查！");
+		entity.setContent(new String(entity.getContent().getBytes("ISO-8859-1"),"UTF-8"));
+		
+		List<BlogComment> blogComments = blogManageService.queryBlogComments(blogId);
+		getRequest().setAttribute("blogComments", blogComments);
+		
+		setNewBlogInfo();
 		return "show";
 	}
 	
@@ -114,7 +157,7 @@ public class BlogManageAction extends BaseAction{
 			handleBase64Image();
 			
 			if(StringUtils.isEmpty(entity.getImagePath())){
-			    entity.setImagePath(getRequest().getContextPath() + "/" +  SystemConstants.BLOG_IMAGE_DIC_DEFAULT + "/index-blog.jpg");
+			    entity.setImagePath(getRequest().getContextPath() + "/" +  SystemConstants.BLOG_IMAGE_DIC_DEFAULT + "/" + SystemConstants.BLOG_IMAGE_DEFAULT);
 			}
 			blogManageService.saveOrUpdate(entity);
 			writeStr(true, "保存成功！");
