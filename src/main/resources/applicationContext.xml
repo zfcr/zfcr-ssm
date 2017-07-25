@@ -58,9 +58,14 @@
     
     <!-- Mybatis通用Mapper与Spring的集成 -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-    	<property name="basePackage" value="cn.zfcr.busi.sysmanage.mapper,cn.zfcr.busi.mapper"></property>
+    	<property name="basePackage" value="cn.zfcr.busi.sysmanage.mapper,cn.zfcr.busi.mapper,cn.zfcr.busi.*.mapper"></property>
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager" />
-    <task:annotation-driven/>
+    
+    <task:annotation-driven executor="myExecutor"
+        scheduler="myScheduler" />
+	<task:executor id="myExecutor" pool-size="5" />
+	<task:scheduler id="myScheduler" pool-size="10" />
+    
  </beans>

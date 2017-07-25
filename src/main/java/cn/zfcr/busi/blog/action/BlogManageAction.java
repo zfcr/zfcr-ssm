@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -42,6 +42,7 @@ import sun.misc.BASE64Decoder;
  * @date 2016年12月3日
  *
  */
+@SuppressWarnings("restriction")
 @Controller
 @Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
 public class BlogManageAction extends BaseAction{
@@ -66,10 +67,6 @@ public class BlogManageAction extends BaseAction{
 	
 	private BlogInfo entity = new BlogInfo();
 
-	public String create(){
-		return "create";
-	}
-	
 	public String main() throws UnsupportedEncodingException{
 	    String uri = getRequest().getRequestURI();
         String pageIndex = uri.substring(uri.lastIndexOf("/")+1, uri.length());
@@ -77,18 +74,25 @@ public class BlogManageAction extends BaseAction{
         if(NumberUtils.isNumber(pageIndex)){
             i = NumberUtils.toInt(pageIndex, 1);
         }
+        entity.setBlogStatus("1");
 	    PageList<BlogInfo> list = blogManageService.queryPaing(entity, new PageInfo(i, 10, "visitTimes desc"));
 	    if(i != 1 && (list == null || list.size() <= 0)){
 	        i = 1;
 	        list = blogManageService.queryPaing(entity, new PageInfo(i, 10, "visitTimes desc"));
 	    }
-	    for (BlogInfo blogInfo : list) {
-	        blogInfo.setContent(new String(blogInfo.getContent().getBytes("ISO-8859-1"),"UTF-8"));
-        }
 	    getRequest().setAttribute("blogInfos", list);
 	    
 	    setNewBlogInfo();
-        return "main";
+	    
+	    // 推荐文章
+	    BlogInfo blogInfo = new BlogInfo();
+	    blogInfo.setBlogStatus("2");
+	    PageList<BlogInfo> recBlogInfos = blogManageService.queryPaing(blogInfo, new PageInfo(1, 3, "visitTimes desc"));
+	    getRequest().setAttribute("recBlogInfos", recBlogInfos);
+	    
+	    List<Map<String, Object>> titleTypeNums = blogManageService.countTitleTypeNum();
+		getRequest().setAttribute("titleTypeNums", titleTypeNums);
+        return "main";   
     }
 
 	/**
@@ -102,28 +106,35 @@ public class BlogManageAction extends BaseAction{
     }
 	
 	public String createAtCkeditor() {
-		DictionaryTree where = new DictionaryTree();
+		setTitleTypes();
+		return "createAtCkeditor";
+	}
+
+	/**
+	 * 设置文章编辑页面待选分类
+	 */
+    private void setTitleTypes() {
+        DictionaryTree where = new DictionaryTree();
 		where.setLevelNumber(2);
 		where.setTypeCode(SystemConstants.TREETYPE_TYPECODE);
 		List<DictionaryTree> dictionaryTrees = treeTypeManageService.find(where);
-		List<Map<String, Object>> list = new ArrayList<>();
-		for (DictionaryTree dictionaryTree : dictionaryTrees) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("name", dictionaryTree.getName());
-			Map<String, String> childrensMap = new HashMap<>();
-			if("1".equals(dictionaryTree.getIsLeaf())){
-				childrensMap.put(dictionaryTree.getCode(), dictionaryTree.getName());
-			}else{
-				List<DictionaryTree> childrens = treeTypeManageService.queryByTreeId(dictionaryTree.getTreeId()+".", SystemConstants.TREETYPE_TYPECODE);
-				for (DictionaryTree dictionaryTree2 : childrens) {
-					childrensMap.put(dictionaryTree2.getCode(), dictionaryTree2.getName());
-				}
-			}
-			map.put("childrens", childrensMap);
-			list.add(map);
-		}
-		getRequest().setAttribute("titleTypes", list);
-		return "createAtCkeditor";
+		getRequest().setAttribute("titleTypes", dictionaryTrees);
+    }
+	
+	public String updateAtCkeditor() throws Exception {
+	    String uri = getRequest().getRequestURI();
+        String blogId = uri.substring(uri.indexOf("/blog/update/") + 13, uri.length());
+        Assert.hasLength(blogId, "编辑文章，文章编号不能为空！");
+        
+        String str = "";
+        if(NumberUtils.isNumber(blogId)){
+            str = NumberUtils.toInt(blogId, 0) + "";
+        }
+        entity = blogManageService.findById(str+"");
+        Assert.isTrue(entity != null, "文章不存在！");
+        
+        setTitleTypes();
+	    return "createAtCkeditor";
 	}
 	
 	public String show() throws Exception{
@@ -131,12 +142,14 @@ public class BlogManageAction extends BaseAction{
 		String blogId = uri.substring(uri.lastIndexOf("/")+1, uri.length());
 		entity = blogManageService.findById(blogId);
 		Assert.isTrue(entity != null, "访问的博客不存在，请检查！");
-		entity.setContent(new String(entity.getContent().getBytes("ISO-8859-1"),"UTF-8"));
 		
 		List<BlogComment> blogComments = blogManageService.queryBlogComments(blogId);
 		getRequest().setAttribute("blogComments", blogComments);
 		
 		setNewBlogInfo();
+		
+		List<Map<String, Object>> titleTypeNums = blogManageService.countTitleTypeNum();
+		getRequest().setAttribute("titleTypeNums", titleTypeNums);
 		return "show";
 	}
 	
@@ -149,15 +162,17 @@ public class BlogManageAction extends BaseAction{
 		        if(StringUtils.isNotEmpty(filePicContentType)){
 		            suffix = "." + (filePicContentType.lastIndexOf("/") != -1 ? filePicContentType.substring(filePicContentType.lastIndexOf("/") + 1, filePicContentType.length()) : filePicContentType);
 		        }
-		        String path = getRequest().getSession().getServletContext().getRealPath("/") + File.separator + SystemConstants.BLOG_IMAGE_DIC + File.separator + CommonUtils.generateUUID() + suffix;
+		        String path = SystemConstants.BLOG_ARTICLE_IMAGE_DIC + File.separator + CommonUtils.generateUUID() + suffix;
 	            String fileName = copyFileToDir(filePic, path);
-	            entity.setImagePath(getRequest().getContextPath() + "/" + SystemConstants.BLOG_IMAGE_DIC_SYS + "/" + fileName);
+	            entity.setImagePath(SystemConstants.BLOG_ARTICLE_IMAGE_DIC_VISIT + "/" + fileName);
 			}
 			
 			handleBase64Image();
 			
 			if(StringUtils.isEmpty(entity.getImagePath())){
-			    entity.setImagePath(getRequest().getContextPath() + "/" +  SystemConstants.BLOG_IMAGE_DIC_DEFAULT + "/" + SystemConstants.BLOG_IMAGE_DEFAULT);
+				Random random = new Random();
+				int index = random.nextInt(SystemConstants.BLOG_DEFAULT_PIC_NAME.length);
+			    entity.setImagePath(SystemConstants.BLOG_ARTICLE_IMAGE_DIC_VISIT + "/" + SystemConstants.BLOG_DEFAULT_PIC_NAME[index]);
 			}
 			blogManageService.saveOrUpdate(entity);
 			writeStr(true, "保存成功！");
@@ -168,13 +183,48 @@ public class BlogManageAction extends BaseAction{
 		}
 		return "success";
 	}
+	
+	public String search() throws Exception {
+		String keywords = getRequest().getParameter("keywords");
+		Assert.hasLength(keywords, "搜索关键词不能为空！");
+		keywords = new String(URLDecoder.decode(keywords, "utf-8"));
+		String index = getRequest().getParameter("index");
+		int i = NumberUtils.toInt(index, 1);
+		PageList<BlogInfo> list = blogManageService.queryFullText(keywords, new PageInfo(i, 10, "visitTimes desc"));
+		getRequest().setAttribute("blogInfos", list);
+	    
+	    setNewBlogInfo();
+	    
+	    List<Map<String, Object>> titleTypeNums = blogManageService.countTitleTypeNum();
+		getRequest().setAttribute("titleTypeNums", titleTypeNums);
+		return "search";
+	}
+	
+	private void init() {
+        setNewBlogInfo();
+	    
+	    List<Map<String, Object>> titleTypeNums = blogManageService.countTitleTypeNum();
+		getRequest().setAttribute("titleTypeNums", titleTypeNums);
+    }
+	
+	public String category() throws Exception {
+	    String uri = getRequest().getRequestURI();
+        String code = uri.substring(uri.lastIndexOf("/")+1, uri.length());
+        DictionaryTree dictionaryTree = treeTypeManageService.getByCode(code);
+        Assert.isTrue(dictionaryTree != null, "文章分类不存在！");
+        PageList<BlogInfo> blogInfos = blogManageService.listByBlogType(dictionaryTree.getTreeId(), new PageInfo(1, 10, "visitTimes desc"));
+        getRequest().setAttribute("blogInfos", blogInfos);
+        
+        init();
+	    return "category";
+	}
 
 	/**
 	 * 处理前台通过粘贴的图片，将图片保存到服务器
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-    private void handleBase64Image() throws IOException, FileNotFoundException {
+	private void handleBase64Image() throws IOException, FileNotFoundException {
         if(StringUtils.isNotEmpty(entity.getContent())){
            Document document = Jsoup.parse(entity.getContent());
            Elements elements = document.select("img");
@@ -186,8 +236,7 @@ public class BlogManageAction extends BaseAction{
                             ? suffix.substring(suffix.lastIndexOf("/") + 1, suffix.length()) : suffix);
                     src = src.substring(src.indexOf(",") + 1);
                     byte[] imageData = new BASE64Decoder().decodeBuffer(src);
-                    String path = getRequest().getSession().getServletContext().getRealPath("/") + File.separator
-                            + SystemConstants.BLOG_IMAGE_DIC + File.separator + CommonUtils.generateUUID()
+                    String path = SystemConstants.BLOG_ARTICLE_IMAGE_DIC + File.separator + CommonUtils.generateUUID()
                             + suffix;
                     File file = new File(path);
                     if (!file.getParentFile().exists()) {
@@ -199,7 +248,7 @@ public class BlogManageAction extends BaseAction{
                     fos.flush();
                     fos.close();
                     
-                    String sysPath = getRequest().getContextPath() + "/" + SystemConstants.BLOG_IMAGE_DIC_SYS + "/" + file.getName();
+                    String sysPath = SystemConstants.BLOG_ARTICLE_IMAGE_DIC_VISIT + "/" + file.getName();
                     element.attr("src", sysPath);
                     
                     // 如果首页显示的图片没有上传，取第一张
@@ -231,9 +280,9 @@ public class BlogManageAction extends BaseAction{
 	            if(StringUtils.isNotEmpty(uploadContentType)){
 	                suffix = "." + (uploadContentType.lastIndexOf("/") != -1 ? uploadContentType.substring(uploadContentType.lastIndexOf("/") + 1, uploadContentType.length()) : uploadContentType);
 	            }
-	            String path = getRequest().getSession().getServletContext().getRealPath("/") + File.separator + SystemConstants.BLOG_IMAGE_DIC + File.separator + CommonUtils.generateUUID() + suffix;
+	            String path = SystemConstants.BLOG_ARTICLE_IMAGE_DIC + File.separator + CommonUtils.generateUUID() + suffix;
 	            String fileName = copyFileToDir(upload, path);
-	            String imagePath = getRequest().getContextPath() + "/" + SystemConstants.BLOG_IMAGE_DIC_SYS + "/" + fileName;
+	            String imagePath = SystemConstants.BLOG_ARTICLE_IMAGE_DIC_VISIT + "/" + fileName;
 	            msg = "window.parent.CKEDITOR.tools.callFunction(" + funcNum + ",'" + imagePath + "','')";
 	            writeStr(String.format(uploadResult, msg));
 	            return;
@@ -248,6 +297,34 @@ public class BlogManageAction extends BaseAction{
             msg = "window.parent.CKEDITOR.tools.callFunction(" + funcNum + ",''," + "'文件上传异常');";   
             writeStr(String.format(uploadResult, msg));
         }
+	}
+	
+	/**
+	 * 根据上级分类编号，查询文章的自定义分类
+	 * @throws IOException 
+	 */
+	public void queryCustomType() throws IOException{
+		try {
+			String code = getParameter("code");
+			if(log.isDebugEnabled()){
+				log.debug("queryCustomType() request paramter code " + code); 
+			}
+			if(StringUtils.isEmpty(code)){
+				writeStr("");
+			}else{
+				DictionaryTree dictionaryTree = treeTypeManageService.getByCode(code);
+				if(dictionaryTree == null){
+					writeStr("");
+					return;
+				}
+				List<DictionaryTree> dictionaryTrees = treeTypeManageService.listByTreeId(dictionaryTree.getTreeId());
+				writeJson(dictionaryTrees);
+			}
+		} catch (IOException e) {
+			log.error(e);
+			e.printStackTrace();
+			writeStr("");
+		}
 	}
 
 	/**
@@ -265,7 +342,7 @@ public class BlogManageAction extends BaseAction{
         FileCopyUtils.copy(sourceFile, file);
         return file.getName();
     }
-
+    
 	public BlogInfo getEntity() {
 		return entity;
 	}

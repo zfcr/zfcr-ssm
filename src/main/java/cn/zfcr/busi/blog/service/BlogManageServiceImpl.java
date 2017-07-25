@@ -2,6 +2,7 @@ package cn.zfcr.busi.blog.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Resource;
@@ -56,13 +57,14 @@ public class BlogManageServiceImpl extends BaseAbstractService implements BlogMa
 			    entity.setCreateUser("章锋");
 			}
 			entity.setCreateTime(new Date());
+			entity.setId(null);
 			blogInfoMapper.insert(entity);
 		}
 	}
 
 	@Override
 	public PageList<BlogInfo> queryPaing(BlogInfo entity, PageInfo pageInfo){
-	    PageList<BlogInfo> blogInfos = (PageList<BlogInfo>) blogInfoMapper.selectByRowBounds(entity, pageInfo);
+	    PageList<BlogInfo> blogInfos = (PageList<BlogInfo>) blogInfoMapper.queryPaging(entity, pageInfo);
 	    return blogInfos;
 	}
 	
@@ -114,7 +116,33 @@ public class BlogManageServiceImpl extends BaseAbstractService implements BlogMa
     @Override
     public void recordVisitTimes(String blogId) {
         BlogInfo blogInfo = findById(blogId);
-        blogInfo.setVisitTimes(blogInfo.getVisitTimes() == null ? 1 : blogInfo.getVisitTimes() + 1);
-        blogInfoMapper.updateByPrimaryKey(blogInfo);
+        Assert.isTrue(blogInfo != null, "没有找到对应的博客文章，blogId:"+blogId);
+        BlogInfo entity = new BlogInfo();
+        entity.setId(blogInfo.getId());
+        entity.setBlogStatus(blogInfo.getBlogStatus());
+        entity.setVisitTimes(blogInfo.getVisitTimes() == null ? 1 : blogInfo.getVisitTimes() + 1);
+        blogInfoMapper.updateByPrimaryKeySelective(entity);
     }
+
+	@Override
+	public PageList<BlogInfo> queryFullText(String name, PageInfo pageInfo) {
+		PageList<BlogInfo> blogInfos = blogInfoMapper.queryFullText(name, pageInfo);
+		return blogInfos;
+	}
+
+	@Override
+	public List<Map<String, Object>> countTitleTypeNum() {
+		return blogInfoMapper.countTitleTypeNum();
+	}
+
+    @Override
+    public PageList<BlogInfo> listByBlogType(String treeId, PageInfo pageInfo) {
+        PageList<BlogInfo> blogInfos = (PageList<BlogInfo>) blogInfoMapper.listByBlogType(treeId, treeId + ".%", pageInfo);
+        return blogInfos;
+    }
+
+	@Override
+	public Long countVisitTimes() {
+		return blogInfoMapper.countVisitTimes();
+	}
 }

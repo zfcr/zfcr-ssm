@@ -9,12 +9,12 @@
 <jsp:include page="/common/header.jsp"></jsp:include>
 <link rel="stylesheet" href="${ctx}/framework/bootstrap-fileinput/css/fileinput.min.css">
 </head>
-<body class="body">
-    <nav class="navbar navbar-default" role="navigation">
+<body class="body" style="background-color: #378F07;">
+	<nav class="navbar navbar-inverse" role="navigation" style="margin-bottom:0px;">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-	        <span class="sr-only"></span>
+	        <span class="sr-only">Toggle navigation</span>
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
@@ -22,35 +22,26 @@
 	      <a class="navbar-brand" href="${ctx }/" style="margin: 0px;padding: 0px;padding-top: 3px;">
 	        <img alt="" src="${ctx }/common/images/logo.png">
 	      </a>
-	       <a class="navbar-brand" href="${ctx }/" style="margin: 0px;margin-left: 15px; padding: 0px;padding-top: 8px;">
-	        <img alt="" src="${ctx }/common/images/zi.png">
-	      </a>
 	    </div>
 	
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <p class="navbar-text navbar-right" style="width: 200px;"></p>
-	      <form class="navbar-form navbar-right" role="search">
-	        <div class="form-group">
-	          <input type="text" class="form-control" placeholder="Search">
-	        </div>
-	         <a class="button button-primary button-rounded button-small" href="#">Go</a>
-	      </form>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#">程序人生</a></li>
-	        <li><a href="#">生活点滴</a></li>
-	        <li><a href="#">娱乐天地</a></li>
+	        <li><a href="#">技术文章</a></li>
+	        <li><a href="${ctx }/blog/feedback/index">留言板</a></li>
 	      </ul>
 	    </div>
 	  </div>
 	</nav>
-
-	<div class="panel panel-default" style="margin: 0px auto;min-width: 1200px;width: 80%;">
-	    <div class="panel-heading">
+    <div style="height: 5px;"></div>
+	<div class="panel panel-default" style="margin: 0px auto;min-width: 1200px;width: 80%;background-color: #C8D190;border-color: #9CA94F;">
+	    <div class="panel-heading" style="background-color: #9CA94F;border-color: #9CA94F;">
 	        <h3 class="panel-title">新建博客（博客新建完成之后，不能马上在博客中查看，需要等博客管理员审核之后才允许查看）</h3>
 	    </div>
     	<div class="panel-body">
-			<form role="form" id="form1" method="post" enctype="multipart/form-data">
+			<form role="form" id="form1" method="post" enctype="multipart/form-data" autocomplete="off">
 			  <s:hidden id="entity.content" name="entity.content"></s:hidden>
+			  <s:hidden id="entity.id" name="entity.id"></s:hidden>
 			  <div class="form-group">
 			    <label for="entity.title">文章标题</label>
 			    <s:textfield class="form-control validate[required,maxSize[300]]" id="entity.title" name="entity.title" placeholder="请输入文章标题"></s:textfield>
@@ -67,22 +58,28 @@
 			    	文章分类
 			    	<a href="#" class="button button-primary button-rounded button-small" onclick="alertTypeManage()">分类管理</a>
 			    </label>
-			    <table class="table">
-			    	<tbody>
-			    		<s:iterator value="#request.titleTypes" var="titleType">
-			    			<tr>
-								<td style="width: 10%;min-width: 100px;"><s:property value="#titleType.name"/>：</td>
-								<td>
-									<s:iterator value="#titleType.childrens" var="children">
-										<input class="validate[required]" type="radio" name="entity.blogType" value="<s:property value="#children.key"/>" />
-										<s:property value="#children.value"/>
-										&nbsp;&nbsp;&nbsp;
-									</s:iterator>
-								</td>
-							</tr>
-			    		</s:iterator>
-					</tbody>
-			    </table>
+			    <div>
+			    	&nbsp;&nbsp;&nbsp;
+			    	<s:hidden id="hiddenBlogType" value="%{entity.blogType}"></s:hidden>
+			    	<s:iterator value="#request.titleTypes" var="titleType">
+			    		<input class="validate[required]" type="radio" onclick="customTypeClick(this)"
+			    			name="entity.blogType" value="<s:property value="#titleType.code"/>" />
+						<s:property value="#titleType.name"/>
+						&nbsp;&nbsp;&nbsp;
+			    	</s:iterator>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label>
+			    	自定义分类（逗号分隔）
+			    </label>
+			    <div>
+			    	<s:textfield class="form-control validate[maxSize[300]]" id="entity.customType" name="entity.customType" 
+			    		onblur="reverseSelectCustomType()" placeholder="请输入或选择分类"></s:textfield>
+			  		<div id="divCustomType">
+			  			
+				    </div>
+			    </div>
 			  </div>
 			  <div class="form-group">
                 <label for="filePic">显示图标</label>
@@ -113,6 +110,19 @@
 <script type="text/javascript" src="${ctx}/framework/bootstrap-fileinput/js/canvas-to-blob.min.js"></script>
 <script type="text/javascript" src="${ctx}/framework/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script type="text/javascript">
+	$(function(){
+		var blogType = $("#hiddenBlogType").val();
+		if(blogType != ''){
+			$("input[name='entity.blogType']").each(function(){
+				if(this.value == blogType){
+					this.checked = true;
+					loadCustomType(this);
+				}
+			});
+		}
+	});
+
+
 	var config = {
 		extraPlugins: 'codesnippet,colorbutton,colordialog',
 		codeSnippet_theme: 'monokai_sublime',
@@ -121,6 +131,11 @@
 	};
 
 	CKEDITOR.replace( 'editor1', config );
+	
+	var content = $("#entity\\.content").val();
+    if (content != ''){
+        CKEDITOR.instances.editor1.setData(content);
+    }
 	
 	$("#input-image-1").fileinput({
 	    allowedFileExtensions: ["jpg", "png", "gif"],
@@ -160,6 +175,90 @@
 		    area: ['800px', '400px'],
 		    content: '${ctx}/busi/sys/treeTypeManage-index.action'
 		  });
+	}
+	
+	// 
+	function customTypeClick(obj){
+		$("#entity\\.customType").val("");
+		loadCustomType(obj);
+	}
+	
+	function loadCustomType(obj){
+		$("body").mLoading({text:'加载自定义分类...'});
+		$.ajax({
+			url: '${ctx}/blog/manage/blogManage-queryCustomType',
+			data:{code: obj.value},
+			method:'POST',
+			dataType: "json",
+			success:function(data){
+				$("body").mLoading('hide');
+				var radioCustomType = "&nbsp;&nbsp;&nbsp;";
+				if(data != undefined && data != ''){
+					var requestResult = eval(data);
+					for(var i = 0; i < requestResult.length; i++){
+						radioCustomType += '<input onclick="selectedCustomType(this,\''+requestResult[i].name+'\')" type="checkbox" name="customType" value="'+requestResult[i].name+'" /> ' + requestResult[i].name;
+						radioCustomType += "&nbsp;&nbsp;&nbsp;";
+					}
+				}
+				$("#divCustomType").html(radioCustomType);
+				reverseSelectCustomType();
+			},
+			error:function(jqXHR, textStatus, errorThrown){
+				$("body").mLoading('hide');
+				Zf.alert("请求失败，请联系管理员！", 5);
+			}
+		});
+	}
+	
+	function selectedCustomType(obj, typeName){
+		var customType = $("#entity\\.customType").val();
+		if(obj.checked == false){
+			var customTypes = customType.split(",");
+			var newCustomtypes = new Array();
+			var count = 0;
+			for(var i = 0; i < customTypes.length; i++){
+				if(typeName != customTypes[i]){
+					newCustomtypes[count++] = customTypes[i];
+				}
+			}
+			$("#entity\\.customType").val(newCustomtypes.join(','));
+		}else{
+			if($.trim(customType) != ''){
+				typeName = "," + typeName;
+			}
+			$("#entity\\.customType").val(customType + typeName);
+		}
+	}
+	
+	// 根据文本框输入的内容，反向勾选自定义分类
+	function reverseSelectCustomType(){
+		var customType = $("#entity\\.customType").val();
+		customType = $.trim(customType);
+		if(customType != ''){
+			var customTypes = customType.split(",");
+			for(var i = 0; i < customTypes.length; i++){
+				$("input[name='customType']").each(function(){
+					if(this.value == customTypes[i]){
+						this.checked = true;
+					}
+				});
+			}
+			$("input[name='customType']").each(function(){
+				var exists = false;
+				for(var j = 0; j < customTypes.length; j++){
+					if(this.value == customTypes[j]){
+						exists = true;
+					}
+				}
+				if(!exists){
+					this.checked = false;
+				}
+			});
+		}else{
+			$("input[name='customType']:checked").each(function(){
+				this.checked = false;
+			});
+		}
 	}
 	
 </script>

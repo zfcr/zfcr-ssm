@@ -46,8 +46,20 @@ public class BlogCommentAction extends BaseAction {
      * 记录文章访问次数
      */
     public void recordVisitTimes() throws Exception {
-        String blogId = getRequest().getParameter("blogId");
-        blogManageService.recordVisitTimes(blogId);
+    	String blogId = getRequest().getParameter("blogId");
+        try {
+			Assert.hasLength(blogId, "博客ID不能为空！");
+			blogManageService.recordVisitTimes(blogId);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			log.error("记录文章访问次数失败，参数(blogId)："+blogId+"，原因："+e.getMessage());
+			log.error(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("记录文章访问次数失败，参数(blogId)："+blogId);
+			log.error(e);
+		}
+        writeStr("");
     }
 
     public BlogComment getBlogComment() {

@@ -1,0 +1,52 @@
+/** 文章的显示样式 */
+
+.content a, .rec a {
+    color: #393839;
+   	font-size: 15px;
+   	line-height: 20px;
+	font-weight: 700;
+}
+
+.blog-title {
+	overflow: hidden;
+	max-height: 40px;
+}
+
+.font-summary {
+    font-size: 12px;
+    color: #404040;
+    font-weight: 400px;
+	line-height: 24px;
+    word-wrap: break-word;
+}
+
+.space10 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+@media (max-width: 767px) {
+  .content a, .rec a {
+    font-size: 12px;
+   	line-height: 20px;
+	font-weight: 700;
+  }
+  
+  .font-summary {
+    font-size: 10px;
+  }
+  
+  .space10 {
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .content a, .rec a {
+    font-size: 15px;
+   	line-height: 20px;
+	font-weight: 700;
+  }
+}
+

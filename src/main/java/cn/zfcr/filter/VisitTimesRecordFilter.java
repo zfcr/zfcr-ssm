@@ -47,7 +47,9 @@ public class VisitTimesRecordFilter implements Filter{
         
         String uri = request.getRequestURI();
         if (uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".png") || uri.endsWith(".jpeg")
-                || uri.endsWith(".jpg") || uri.endsWith(".eot")) {
+                || uri.endsWith(".jpg") || uri.endsWith(".eot") || uri.endsWith(".gif")
+                || uri.endsWith(".woff2") || uri.endsWith(".woff") || uri.endsWith(".map")
+                || uri.endsWith(".ttf")) {
             arg2.doFilter(request, response);
             return;
         }

@@ -45,12 +45,16 @@
 <!-- 		      enableUpdateByExample="false" enableDeleteByExample="false"  -->
 <!-- 			  enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
 
-<!-- 			<table tableName="t_blog_info" domainObjectName="BlogInfo" enableCountByExample="false"  -->
-<!-- 		      enableUpdateByExample="false" enableDeleteByExample="false"  -->
-<!-- 			  enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
+			<table tableName="t_blog_info" domainObjectName="BlogInfo" enableCountByExample="false" 
+		      enableUpdateByExample="false" enableDeleteByExample="false" 
+			  enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
-           <table tableName="t_blog_comment" domainObjectName="BlogComment" enableCountByExample="false" 
-             enableUpdateByExample="false" enableDeleteByExample="false" 
-             enableSelectByExample="false" selectByExampleQueryId="false"></table>
+<!--            <table tableName="t_blog_comment" domainObjectName="BlogComment" enableCountByExample="false"  -->
+<!--              enableUpdateByExample="false" enableDeleteByExample="false"  -->
+<!--              enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
+
+<!--            <table tableName="t_message_board_info" domainObjectName="MessageBoardInfo" enableCountByExample="false"  -->
+<!--              enableUpdateByExample="false" enableDeleteByExample="false"  -->
+<!--              enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
     </context>  
 </generatorConfiguration>

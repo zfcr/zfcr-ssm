@@ -17,9 +17,45 @@
     <result column="lastUpdateTime" jdbcType="TIMESTAMP" property="lastUpdateTime" />
     <result column="imagePath" jdbcType="VARCHAR" property="imagePath" />
     <result column="comments" jdbcType="INTEGER" property="comments" />
+    <result column="customType" jdbcType="VARCHAR" property="customType" />
   </resultMap>
 
   <select id="queryNewTitle" resultMap="baseResultMap" parameterType="cn.zfcr.busi.entity.BlogInfo">
-    select id,title,blogType,comments,visitTimes,blogStatus from t_blog_info order by visitTimes desc limit 0,10
+    select id,title,blogType,comments,visitTimes,blogStatus,customType from t_blog_info WHERE blogStatus = '1' order by visitTimes desc limit 0,10
   </select>
+  
+  <select id="queryPaging" resultMap="baseResultMap" parameterType="cn.zfcr.busi.entity.BlogInfo">
+    select id,title,blogType,comments,visitTimes,blogStatus,summary,
+        blogTag,createUser,createTime,imagePath,customType from t_blog_info
+        <where>
+	        <if test="blogStatus != null and blogStatus != ''">
+	        	blogStatus = #{blogStatus}
+	        </if>
+        </where>
+  </select>
+  
+  <select id="queryFullText" resultMap="baseResultMap">
+    SELECT id,title,blogType,comments,visitTimes,blogStatus,summary,blogTag,createUser,createTime,imagePath
+		FROM t_blog_info 
+		WHERE MATCH(title, content, summary) 
+		AGAINST (#{0} IN BOOLEAN MODE) limit 0,10
+  </select>
+  
+  <!-- 统计文章一级分类的文章数量 -->
+  <select id="countTitleTypeNum" resultType="java.util.HashMap">
+  	SELECT a.code AS code,a.name AS name,count(b.id) AS cn 
+  		FROM t_system_dictionary_tree a LEFT JOIN t_blog_info b ON a.code = b.blogType AND b.blogStatus != '0'
+		WHERE a.levelNumber = 2 AND a.type_code = '0001' GROUP BY a.code,a.name ORDER BY a.orderNo 
+  </select>
+  
+  <select id="listByBlogType" resultMap="baseResultMap">
+    SELECT id,title,blogType,comments,visitTimes,blogStatus,summary,blogTag,createUser,createTime,imagePath
+        FROM t_blog_info a
+        WHERE a.blogStatus != '0' AND EXISTS(SELECT 1 FROM t_system_dictionary_tree b WHERE a.blogType = b.code AND (b.treeId = #{0} OR b.treeId LIKE #{1}))
+  </select>
+  
+  <select id="countVisitTimes" resultType="java.lang.Long">
+    SELECT count(1) as cn FROM t_system_visit_times a
+  </select>
+  
 </mapper>

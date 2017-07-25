@@ -14,6 +14,7 @@
 	<div id="content" style="width: 90%;margin-top: 10px;">
 		<form action="" id="form1" class="form-horizontal" role="form" autocomplete="false">
 		  <s:hidden id="entity.parentId" name="entity.parentId"></s:hidden>
+		  <s:hidden id="entity.levelNumber" name="entity.levelNumber"></s:hidden>
 		  <s:hidden id="entity.id" name="entity.id"></s:hidden>
 		  <div class="form-group">
 		    <label for="code" class="col-sm-2 control-label">分类编号</label>

@@ -41,4 +41,12 @@ public class BaseAction {
 		writeStr(String.format(writeValue, size, dataStr));
 	}
 	
+	protected void writeJson(List<?> data) throws IOException {
+		Gson gson = new GsonBuilder().create();
+		writeStr(gson.toJson(data));
+	}
+	
+	protected String getParameter(String paramName) {
+		return ServletActionContext.getRequest().getParameter(paramName);
+	}
 }

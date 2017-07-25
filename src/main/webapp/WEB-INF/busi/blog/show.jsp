@@ -5,15 +5,70 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>${entity.title }</title>
 <jsp:include page="/common/header.jsp"></jsp:include>
+<link rel="stylesheet" href="${ctx}/framework/ckeditor/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css" />
+<link rel="stylesheet" href="${ctx}/framework/qqface/qqface.css" />
+<style type="text/css">
+pre {
+    position: relative;
+    margin-bottom: 24px;
+    border-radius: 3px;
+    border: 1px solid #C3CCD0;
+    background: #FFF;
+    overflow: hidden;
+}
+
+code {
+  display: block;
+  padding: 12px 24px;
+  overflow-y: auto;
+  font-weight: 300;
+  font-family: Menlo, monospace;
+  font-size: 0.8em;
+}
+
+code.has-numbering {
+    margin-left: 21px;
+}
+
+.pre-numbering {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35px;
+    padding: 18px 2px 12px 0;
+    border-right: 1px solid #C3CCD0;
+    border-radius: 3px 0 0 3px;
+    background-color: #EEE;
+    text-align: right;
+    font-family: Menlo, monospace;
+    font-size: 1em;
+    color: #AAA;
+}
+</style>
+<style type="text/css">
+    hr {
+        border-color: #378F07;
+    }
+</style>
+<script type="text/javascript">
+function replace_em(str){
+	str = str.replace(/\</g,'&lt;');
+	str = str.replace(/\>/g,'&gt;');
+	str = str.replace(/\n/g,'<br/>');
+	str = str.replace(/\[em_([0-9]*)\]/g,'<img src="${ctx}/framework/qqface/face/$1.gif" border="0" />');
+	return str;
+}
+</script>
 </head>
-<body class="body">
-    <nav class="navbar navbar-default" role="navigation">
+<body class="body" style="background-color: #378F07;">
+    <nav class="navbar navbar-inverse" role="navigation" style="margin-bottom:0px;">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only"></span>
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -21,32 +76,23 @@
           <a class="navbar-brand" href="${ctx }/" style="margin: 0px;padding: 0px;padding-top: 3px;">
             <img alt="" src="${ctx }/common/images/logo.png">
           </a>
-           <a class="navbar-brand" href="${ctx }/" style="margin: 0px;margin-left: 15px; padding: 0px;padding-top: 8px;">
-            <img alt="" src="${ctx }/common/images/zi.png">
-          </a>
         </div>
     
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <p class="navbar-text navbar-right" style="width: 200px;"></p>
-          <form class="navbar-form navbar-right" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-             <a class="button button-primary button-rounded button-small" href="#">Go</a>
-          </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">程序人生</a></li>
-            <li><a href="#">生活点滴</a></li>
-            <li><a href="#">留言板</a></li>
+            <li><a href="#">技术文章</a></li>
+            <li><a href="${ctx }/blog/feedback/index">留言板</a></li>
           </ul>
         </div>
       </div>
     </nav>
     
+    <div style="height: 5px;"></div>
     
-    <div class="container" style="width: 1200px;min-width: 1200px;">
+    <div class="container">
 	    <div class="row clearfix">
-	        <div class="col-md-8 column" style="margin-right: 0px;padding-right:10px;padding-top: 20px;border-right: 5px dashed #ddd;">
+	        <div class="col-md-8 column bg-content">
 	          <div style="margin: 0px auto;width: 100%;">
 		        <div style="overflow: auto;white-space:normal;word-break:break-all;" id="titleDiv">
 		            <div align="center" style="font-size: 18px;font-weight: bold;">${entity.title }</div>
@@ -74,7 +120,7 @@
 					</div>
 					<hr>
 		        
-		            ${entity.content }
+		            <div style="line-height: 25px;">${entity.content }</div>
 		            
 		            <span class="label label-success">评论列表</span>
 		            <hr style="margin-top: 5px;">
@@ -94,7 +140,9 @@
                           <a href="#"><span class="glyphicon glyphicon-thumbs-up font-summary" onmouseout="this.style.color='#999'" onmouseover="this.style.color='black'">顶(0)</span></a>
 		              </div>
 		              <div>
-		                  ${blogComment.comment }
+		              	<script type="text/javascript">
+		              		document.write(replace_em('${blogComment.comment }'));
+		              	</script>
 		              </div>
 		              <hr>
 		            </s:iterator>
@@ -110,10 +158,11 @@
 					    </div>
 					  </div>
 					  <div class="form-group">
-					     <label for="blogComment.comment" class="col-sm-2 control-label">评论内容：</label>
+					     <label for="blogCommentComment" class="col-sm-2 control-label">评论内容：</label>
 					    
 					    <div class="col-sm-10">
-                          <textarea id="blogComment.comment" name="blogComment.comment" class="form-control validate[required,maxSize[1000]]" rows="4"></textarea>
+                          <span class="emotion">表情</span>
+                          <textarea id="blogCommentComment" name="blogComment.comment" class="form-control validate[required,maxSize[1000]]" rows="4"></textarea>
                         </div>
 					  </div>
 					  <div class="form-group">
@@ -126,61 +175,56 @@
 		      </div>
 	        </div>
 	        
-	        <div class="col-md-4 column">
-	            <div>
-	                <div class="page-header" style="margin-bottom: 0px;">
-	                    <span class="label label-success">最新文章</span>
-	                </div>
-	                <div class="titleGrid">
-	                    <s:iterator value="#request.newBlogInfos" var="newBlogInfo" status="blogCount">
-	                        <div style="border-bottom: 1px dotted #ddd;">
-	                            <div class="number 
-	                               <s:if test="#blogCount.count == 1">one</s:if>
-	                               <s:elseif test="#blogCount.count == 2">two</s:elseif>
-	                               <s:elseif test="#blogCount.count == 3">three</s:elseif>
-	                               <s:elseif test="#blogCount.count == 4">four</s:elseif>
-	                               <s:elseif test="#blogCount.count == 5">five</s:elseif>
-	                               <s:elseif test="#blogCount.count == 6">six</s:elseif>
-	                               <s:elseif test="#blogCount.count == 7">seven</s:elseif>
-	                               " style="float: left;margin-right: 10px;margin-top: 8px;">${blogCount.count }</div>
-	                            <div class="apostrophe" style="padding-top: 10px;">
-	                                <nobr><a href="${ctx }/blog/show/${newBlogInfo.id }" target="_blank">${newBlogInfo.title }</a></nobr>
-	                            </div>
-	                        </div>
-	                    </s:iterator>
-	                </div>
-	            </div>
-	            <div style="height: 50px;"></div>
-	            <div style="width: 350px;margin: 0px auto;">
-	               <div id="myCarousel" class="carousel slide" data-ride="carousel">
-					    <!-- 轮播（Carousel）指标 -->
-					    <ol class="carousel-indicators">
-					        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-					        <li data-target="#myCarousel" data-slide-to="1"></li>
-					        <li data-target="#myCarousel" data-slide-to="2"></li>
-					    </ol>   
-					    <!-- 轮播（Carousel）项目 -->
-					    <div class="carousel-inner">
-					        <div class="item active">
-					            <img src="${ctx }/common/images/gg-img1.png" alt="First slide">
-					        </div>
-					        <div class="item">
-					            <img src="${ctx }/common/images/gg-img2.png" alt="Second slide">
-					        </div>
-					        <div class="item">
-					            <img src="${ctx }/common/images/gg-img3.png" alt="Third slide">
-					        </div>
-					    </div>
-					    <!-- 轮播（Carousel）导航 -->
-					    <a class="carousel-control left" href="#myCarousel" 
-					        data-slide="prev">&lsaquo;
-					    </a>
-					    <a class="carousel-control right" href="#myCarousel" 
-					        data-slide="next">&rsaquo;
-					    </a>
+	        <div class="col-md-4 column hidden-xs hidden-sm">
+	        	<div class="panel panel-default zf-panel new-title">
+					<div class="panel-heading">
+						最新文章
 					</div>
-	            </div>
-	        </div>
+					<div class="panel-body">
+						<ul class="list-group titleGrid apostrophe">
+							<s:iterator value="#request.newBlogInfos" var="newBlogInfo" status="blogCount">
+								<nobr>
+									<a class="list-group-item" href="${ctx }/blog/show/${newBlogInfo.id }"
+									target="_blank" style="background-color: #C8D190;border: 0px;border-bottom: 1px solid rgba(168, 205, 37, 1);padding-bottom: 5px;padding-top: 10px;">
+										<span class="label number 
+										   <s:if test="#blogCount.count == 1">one</s:if>
+		                                   <s:elseif test="#blogCount.count == 2">two</s:elseif>
+		                                   <s:elseif test="#blogCount.count == 3">three</s:elseif>
+		                                   <s:elseif test="#blogCount.count == 4">four</s:elseif>
+		                                   <s:elseif test="#blogCount.count == 5">five</s:elseif>
+		                                   <s:elseif test="#blogCount.count == 6">six</s:elseif>
+		                                   <s:elseif test="#blogCount.count == 7">seven</s:elseif>
+										">&nbsp;${blogCount.count }&nbsp;</span>
+										&nbsp;&nbsp;
+										${newBlogInfo.title }
+									</a></nobr>
+							</s:iterator>
+						</ul>
+					</div>
+				</div>
+				
+	            <div style="height: 5px;"></div>
+	            
+	            <div class="panel panel-default zf-panel title-type">
+	            	<div class="panel-heading">
+	                   	文章分类
+	                </div>
+	            	<div class="panel-body">
+	            		<ul class="list-group">
+	            			<s:iterator value="#request.titleTypeNums" var="titleTypeNum">
+	            				<a href="${ctx }/blog/category/${titleTypeNum.code}" class="list-group-item" 
+	            				   style="background-color: #C8D190;border: 0px;border-bottom: 2px solid rgba(168, 205, 37, 1);">
+								  	<i class="fa fa-plus"></i>
+								  	&nbsp;${titleTypeNum.name }
+								  	<span class="badge" style="background-color: #468847;">${titleTypeNum.cn }</span>
+								</a>
+	            			</s:iterator>
+						</ul>
+	            	</div>
+	       	 	</div>
+	         
+				<div style="height: 5px;"></div>
+	    	</div>
 	    </div>
 	    
 	</div>
@@ -190,8 +234,35 @@
         <p>  © 2017 章锋个人博客（zhangfeng.com）</p>
     </div>
 </body>
+<script type="text/javascript"
+	src="${ctx}/framework/ckeditor/vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+<script type="text/javascript" src="${ctx}/framework/qqface/jquery.qqFace.js"></script>
+<script type="text/javascript" src="${ctx}/framework/qqface/jquery-browser.js"></script>
 <script type="text/javascript">
     $("img").css("maxWidth",$("#titleDiv").width());
+    
+    $(function(){
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length;
+            var $numbering = $('<ul/>').addClass('pre-numbering');
+            $(this)
+                .addClass('has-numbering')
+                .parent()
+                .append($numbering);
+            for(i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+        $('.emotion').qqFace({
+    		id : 'facebox', //表情盒子的ID
+    		assign:'blogCommentComment', //给那个控件赋值
+    		path:'${ctx}/framework/qqface/face/'	//表情存放的路径
+    	});
+        
+    });
+
+	hljs.initHighlightingOnLoad();
     
     $("#submitComment").bind("click",function(){
     	var result = $("#formComment").validationEngine('validate');
@@ -205,6 +276,7 @@
     }
     
     // 记录文章访问次数
-    Common.asyncCallUrl("${ctx}/blog/manage/blogComment-recordVisitTimes?blogId=${blogComment.blogId}");
+    Common.asyncCallUrl("${ctx}/blog/manage/blogComment-recordVisitTimes?blogId=${entity.id}");
+    
 </script>
 </html>

@@ -1,6 +1,7 @@
 package cn.zfcr.busi.blog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.zfcr.busi.entity.BlogComment;
 import cn.zfcr.busi.entity.BlogInfo;
@@ -56,4 +57,32 @@ public interface BlogManageService {
      */
     void recordVisitTimes(String blogId);
 
+    /**
+     * 全文搜素
+     * @param name
+     * @param pageInfo
+     * @return
+     */
+	PageList<BlogInfo> queryFullText(String name, PageInfo pageInfo);
+
+	/**
+	 * 统计文章一级分类的文章数量
+	 * @return
+	 */
+	public List<Map<String, Object>> countTitleTypeNum();
+
+	/**
+	 * 查询文章分类下所有文章，包括下级文章，分页查询
+	 * @param treeId
+	 * @param pageInfo
+	 * @return
+	 */
+    PageList<BlogInfo> listByBlogType(String treeId, PageInfo pageInfo);
+    
+    /**
+     * 统计博客的访问次数
+     * @return
+     */
+    Long countVisitTimes();
+    
 }

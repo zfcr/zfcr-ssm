@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfcr.busi.feedback.mapper.FeedbackInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.zfcr.busi.entity.FeedbackInfo">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="levelId" jdbcType="VARCHAR" property="levelId" />
+    <result column="levelNumber" jdbcType="INTEGER" property="levelNumber" />
+    <result column="upId" jdbcType="VARCHAR" property="upId" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="praiseTime" jdbcType="INTEGER" property="praiseTime" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="website" jdbcType="VARCHAR" property="website" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+  <!-- 查询当前级别下最大的levelId -->
+  <select id="queryMaxLevelId" resultType="string" parameterType="cn.zfcr.busi.entity.FeedbackInfo">
+  	select max(levelId) as levelId from t_feedback_info where levelId like #{levelId} and levelNumber = #{levelNumber}
+  </select>
+  
+</mapper>

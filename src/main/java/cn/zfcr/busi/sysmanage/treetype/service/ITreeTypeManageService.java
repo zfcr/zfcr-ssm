@@ -56,4 +56,13 @@ public interface ITreeTypeManageService {
 	 * @return
 	 */
 	List<DictionaryTree> queryByTreeId(String treeId, String typeCode);
+
+	/**
+	 * 查询所有下级字典
+	 * @param treeId
+	 * @return
+	 */
+	List<DictionaryTree> listByTreeId(String treeId);
+
+	DictionaryTree getByCode(String code);
 }

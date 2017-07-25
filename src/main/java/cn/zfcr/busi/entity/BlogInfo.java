@@ -27,13 +27,17 @@ public class BlogInfo {
 
     @Column(name="blogType")
     private String blogType;
+    
+    /** 自定义分类 即文章分类的下级分类  */
+    @Column(name="customType")
+    private String customType;
 
     private String summary;
 
     @Column(name="blogTag")
     private String blogTag;
 
-    /** 博客状态 0:草稿,1:正常 */
+    /** 博客状态 0:草稿,1:正常,2:推荐 */
     @Column(name="blogStatus")
     private String blogStatus="0";
 
@@ -61,7 +65,7 @@ public class BlogInfo {
     
     @Column(name="imagePath")
     private String imagePath;
-
+    
     public String getId() {
         return id;
     }
@@ -182,13 +186,21 @@ public class BlogInfo {
         this.comments = comments;
     }
 
-    @Override
-    public String toString() {
-        return "BlogInfo [id=" + id + ", title=" + title + ", content=" + content + ", blogType=" + blogType
-                + ", summary=" + summary + ", blogTag=" + blogTag + ", blogStatus=" + blogStatus + ", createUser="
-                + createUser + ", createTime=" + createTime + ", createAddr=" + createAddr + ", visitTimes="
-                + visitTimes + ", comments=" + comments + ", lastUpdateUser=" + lastUpdateUser + ", lastUpdateTime="
-                + lastUpdateTime + ", imagePath=" + imagePath + "]";
-    }
+	public String getCustomType() {
+		return customType;
+	}
+
+	public void setCustomType(String customType) {
+		this.customType = customType;
+	}
+
+	@Override
+	public String toString() {
+		return "BlogInfo [id=" + id + ", title=" + title + ", content=" + content + ", blogType=" + blogType
+				+ ", customType=" + customType + ", summary=" + summary + ", blogTag=" + blogTag + ", blogStatus="
+				+ blogStatus + ", createUser=" + createUser + ", createTime=" + createTime + ", createAddr="
+				+ createAddr + ", visitTimes=" + visitTimes + ", comments=" + comments + ", lastUpdateUser="
+				+ lastUpdateUser + ", lastUpdateTime=" + lastUpdateTime + ", imagePath=" + imagePath + "]";
+	}
 
 }

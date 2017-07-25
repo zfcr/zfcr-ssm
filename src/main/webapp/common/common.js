@@ -91,6 +91,9 @@ var Common = {
 			method:'GET',
 			dataType: "text"
 		});
+	},
+	replaceAll: function(value, regex, replacement){
+		return value.replace(new RegExp(regex,'gm'),replacement);
 	}
 };
 

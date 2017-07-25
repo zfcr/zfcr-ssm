@@ -52,6 +52,12 @@ public class TreeTypeManageServiceTest {
 		System.out.println(dictionaryTrees);
 	}
 	
+	@Test
+	public void testListByTreeId(){
+		List<DictionaryTree> dictionaryTrees = treeTypeManageService.listByTreeId("1.1");
+		System.out.println(dictionaryTrees);
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("1.1".split("\\.").length);
 	}

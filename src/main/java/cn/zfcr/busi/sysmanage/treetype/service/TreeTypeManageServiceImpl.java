@@ -5,10 +5,12 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import cn.zfcr.busi.sysmanage.entity.DictionaryTree;
 import cn.zfcr.busi.sysmanage.mapper.DictionaryTreeMapper;
 import cn.zfcr.common.base.service.BaseAbstractService;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class TreeTypeManageServiceImpl extends BaseAbstractService implements ITreeTypeManageService{
@@ -31,6 +33,14 @@ public class TreeTypeManageServiceImpl extends BaseAbstractService implements IT
 	
 	@Override
 	public void saveOrUpdate(DictionaryTree dictionaryTree){
+	    if(dictionaryTree.getLevelNumber() == null){
+	        DictionaryTree parent = dictionaryTreeMapper.selectByPrimaryKey(dictionaryTree.getParentId());
+	        if(parent == null){
+	            dictionaryTree.setLevelNumber(0);
+	        }else{
+	            dictionaryTree.setLevelNumber(parent.getLevelNumber() + 1);
+	        }
+	    }
 		if(isEmpty(dictionaryTree.getId())){
 			setTreeId(dictionaryTree);
 			dictionaryTreeMapper.insert(dictionaryTree);
@@ -99,13 +109,28 @@ public class TreeTypeManageServiceImpl extends BaseAbstractService implements IT
 		return dictionaryTreeMapper.selectByPrimaryKey(id);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<DictionaryTree> queryByTreeId(String treeId, String typeCode) {
 		DictionaryTree dictionaryTree = new DictionaryTree();
 		dictionaryTree.setTreeId(treeId+"%");
 		dictionaryTree.setTypeCode(typeCode);
 		List<DictionaryTree> dictionaryTrees = (List<DictionaryTree>) commonQueryDao.query(DictionaryTreeMapper.class, "queryByTreeId", dictionaryTree);
 		return dictionaryTrees;
+	}
+	
+	@Override
+	public List<DictionaryTree> listByTreeId(String treeId) {
+		Example example = new Example(DictionaryTree.class);
+		example.createCriteria().andLike("treeId", treeId + ".%");
+		return dictionaryTreeMapper.selectByExample(example);
+	}
+
+	@Override
+	public DictionaryTree getByCode(String code) {
+		DictionaryTree dictionaryTree = new DictionaryTree();
+		dictionaryTree.setCode(code);
+		List<DictionaryTree> dictionaryTrees = dictionaryTreeMapper.select(dictionaryTree);
+		return CollectionUtils.isEmpty(dictionaryTrees) ? null : dictionaryTrees.get(0);
 	}
 }

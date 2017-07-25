@@ -1,0 +1,53 @@
+/** 基本样式 */
+
+@media (max-width: 768px) {
+	.blog-form {
+		width: 100%;
+	}
+	
+	.blog-main-img {
+		width: 90px;
+		height: 60px;
+	}
+}
+
+@media (min-width: 769px) {
+	.blog-form {
+		width: 80%;
+	}
+	
+	.blog-border-right {
+		border-right: 5px dashed #ddd;
+	}
+
+	.blog-main-img {
+		width: 160px;
+		height: 120px;
+	}
+}
+
+.zf-panel {
+	background-color: #74802C;
+	border-color: #9CA94F;
+}
+
+.zf-panel .panel-heading {
+	background-color: #9CA94F;
+	border-bottom-color: #9CA94F;
+}
+
+.zf-panel .panel-body {
+	background-color: #C8D190;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 显示内容区域的背景颜色 */
+.bg-content {
+	background-color: #C8D190;
+}
+
+/* 背景颜色 */
+.bg-heading {
+	background-color: #9CA94F;
+}

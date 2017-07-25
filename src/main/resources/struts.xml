@@ -21,8 +21,8 @@
             <exception-mapping result="globalException" exception="java.lang.Exception" />
         </global-exception-mappings>
     </package>
-       
-    <package name="test"  extends="zf_base" namespace="/">
+    
+    <package name="test" extends="zf_base" namespace="/">
 		<action name="city-*" class="cityAction" method="{1}">
 			<result name="success">/index.jsp</result>
 		</action>
@@ -33,24 +33,26 @@
 		<action name="demo-*" class="demoAction" method="{1}">
 			<result name="{1}">/WEB-INF/demo/{1}.jsp</result>
 		</action>
+		<action name="main" class="blogManageAction" method="main">
+            <result name="main">/main.jsp</result>
+        </action>
     </package>
     
     <package name="blog"  extends="zf_base" namespace="/blog">
-    	<action name="create" class="blogManageAction" method="create">
-			<result name="create">/WEB-INF/busi/blog/create.jsp</result>
-		</action>
-    	<action name="" class="blogManageAction" method="main">
-			<result name="main">/main.jsp</result>
-		</action>
-		<action name="createAtCkeditor" class="blogManageAction" method="createAtCkeditor">
+		<action name="create" class="blogManageAction" method="createAtCkeditor">
 			<result name="createAtCkeditor">/WEB-INF/busi/blog/createAtCkeditor.jsp</result>
+		</action>
+		<action name="search" class="blogManageAction" method="search">
+			<result name="search">/WEB-INF/busi/blog/search.jsp</result>
 		</action>
 		<action name="saveOrUpdate" class="blogManageAction" method="saveOrUpdate" >
 		    <result name="success" type="redirect">/</result>
 		</action>
 		<action name="ckeditorUpload" class="blogManageAction" method="ckeditorUpload" />
-		<action name="*" class="blogManageAction" method="main">
-            <result name="main">/main.jsp</result>
+    </package>
+    <package name="blogUpdate" extends="zf_base" namespace="/blog/update">
+        <action name="*" class="blogManageAction" method="updateAtCkeditor">
+            <result name="createAtCkeditor">/WEB-INF/busi/blog/createAtCkeditor.jsp</result>
         </action>
     </package>
     <package name="blogShow"  extends="zf_base" namespace="/blog/show">
@@ -66,6 +68,17 @@
     <package name="blogManage" extends="zf_base" namespace="/blog/manage">
         <action name="*-*" class="{1}Action" method="{2}">
             <result name="{2}">/WEB-INF/busi/blog/{2}.jsp</result>
+        </action>
+    </package>
+    
+    <package name="feedback" extends="zf_base" namespace="/blog/feedback">
+    	<action name="*" class="feedbackAction" method="{1}">
+            <result name="{1}">/WEB-INF/busi/feedback/{1}.jsp</result>
+        </action>
+    </package>
+    <package name="blogCategory"  extends="zf_base" namespace="/blog/category">
+        <action name="*" class="blogManageAction" method="category">
+            <result name="category">/WEB-INF/busi/blog/category.jsp</result>
         </action>
     </package>
 </struts>
